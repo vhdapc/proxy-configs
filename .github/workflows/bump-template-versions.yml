@@ -1,0 +1,64 @@
+name: Bump template versions
+
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-template-versions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update Clash template headers
+        shell: python
+        run: |
+          from pathlib import Path
+          version = 'v2026.06.29-1'
+          date = '2026/6/29'
+          variants = {
+              'clash/clash-all.yaml': 'clash-all',
+              'clash/clash4me.yaml': 'clash4me',
+          }
+
+          for path_str, variant in variants.items():
+              path = Path(path_str)
+              text = path.read_text(encoding='utf-8')
+              lines = text.splitlines()
+
+              # 去掉旧的头部日期行，保留从 sniffer 开始的主体内容。
+              start = 0
+              for i, line in enumerate(lines):
+                  if line.strip() == 'sniffer:':
+                      start = i
+                      break
+
+              body = lines[start:]
+              header = [
+                  '# Clash / mihomo 配置模板（Sub-Store 调用版）',
+                  f'# Template: {variant}',
+                  f'# Version: {version}',
+                  f'# Date: 修改于 {date}',
+                  '',
+              ]
+              path.write_text('\n'.join(header + body) + '\n', encoding='utf-8')
+
+      - name: Commit version update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add clash/clash-all.yaml clash/clash4me.yaml
+          if git diff --cached --quiet; then
+            echo 'No version changes to commit.'
+          else
+            git commit -m 'Bump Clash template versions to v2026.06.29-1'
+            git push
+          fi

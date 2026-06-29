@@ -1,0 +1,51 @@
+name: Import Clash Gist templates
+
+on:
+  push:
+    paths:
+      - '.github/workflows/import-clash-gists.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Clash templates from pinned Gist raw URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p clash
+
+          curl -fsSL 'https://gist.githubusercontent.com/vhdapc/0e24a2d74b11e5cad707e6c01181f4f9/raw/fb27f87fbfd9838d09f2a06b94240350d29ae68c/clash-all' -o clash/clash-all.yaml
+          curl -fsSL 'https://gist.githubusercontent.com/vhdapc/f3dadca1a1b7b093da75263fd4f69c54/raw/9ec5bb7ce3e30b36f8c1e573749a8fb87001085f/clash4me' -o clash/clash4me.yaml
+
+      - name: Safety scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in clash/clash-all.yaml clash/clash4me.yaml; do
+            echo "Scanning $f"
+            grep -nEi '^\s*(server|password|uuid|token|secret|proxy-providers)\s*:' "$f" && exit 1 || true
+            grep -nEi '\b(subscription|subscribe)\b' "$f" && exit 1 || true
+            test -s "$f"
+          done
+
+      - name: Commit imported templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add clash/clash-all.yaml clash/clash4me.yaml
+          if git diff --cached --quiet; then
+            echo 'No template changes to commit.'
+          else
+            git commit -m 'Import Clash templates from Gist'
+            git push
+          fi

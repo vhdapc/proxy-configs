@@ -27,9 +27,9 @@ proxy-configs/
 2. Sub-Store 负责导入模板、订阅和变量，并生成最终配置。
 3. 每次修改模板后，优先通过 Sub-Store 生成测试配置，再同步到客户端或路由器。
 
-## 待迁移模板
+## 已迁移模板
 
-| 文件 | 原 Gist | 状态 |
-|---|---|---|
-| `clash/clash4me.yaml` | `clash4me` | 待导入 |
-| `clash/clash-all.yaml` | `clash-all` | 待导入 |
+| 文件 | 原 Gist | 状态 | Raw URL |
+|---|---|---|---|
+| `clash/clash4me.yaml` | `clash4me` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash4me.yaml` |
+| `clash/clash-all.yaml` | `clash-all` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash-all.yaml` |

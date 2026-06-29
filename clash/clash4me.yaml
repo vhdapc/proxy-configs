@@ -1,0 +1,1016 @@
+##clash配置模板，修改自用版本，修改于26/6/24 17:36
+
+# --- 嗅探器配置 (放置在这里) ---
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: false #暂时调节成false，观察一下
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880, 2052]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - 'geosite:cn'
+    - 'geosite:apple'
+    - '+.mobaiemby.site'
+    - '+.uhdnow.com'
+  skip-dst-address:
+    - 'geoip:cn'
+    
+    
+
+
+proxy-groups:
+      
+  - name: 🚀 节点选择
+    type: fallback
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    proxies:
+      - 🌱 原生节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+ 
+  - name: 🌐 国外通用
+    type: select
+    proxies:
+      - 🇯🇵 日本节点
+      - 🇭🇰 香港节点
+      - 🇺🇲 美国节点
+      - 🚀 手动切换
+      
+  - name: 🌱 原生节点
+    include-all: true
+    filter: (?i)^Native-Zouter-(RFC|KFC)$
+    type: url-test
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 50
+      
+  - name: 🚀 手动切换
+    include-all: true
+    exclude-filter: (?i)应急|10X|10倍率|V3
+    type: select
+    
+  - name: ♻️ 自动选择
+    type: url-test
+    include-all: true
+    exclude-filter: (?i)应急|10X|10倍率|V3
+    interval: 300
+    tolerance: 50
+    
+  - name: 📺 Emby观影
+    type: select
+    proxies:
+      - ✈️ 机场节点             # 刚才我们过滤出的机场 NF/BGP 组
+      - 🇺🇲 美国节点             # 你的美西三网优化线路（自建）
+      - 🇯🇵 日本节点             # 你的 JP 专线（自建）
+      - 🇭🇰 香港节点
+      - 🚀 手动切换
+      - DIRECT                 # 直连（如果你在本地做了 CF 优选 IP 劫持，选这个）
+      
+  - name: 📲 电报消息
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+
+  - name: 💬 GoogleAI
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    proxies:
+      - 🚀 节点选择    
+      - 🌱 原生节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+
+  - name: 📹 油管视频
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
+      #- 🇨🇳 台湾节点
+      #- 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      #- 🇰🇷 韩国节点
+      - ✈️ 机场节点
+      - 🚀 手动切换
+
+  - name: 🛑 广告拦截
+    type: select
+    proxies:
+      - PASS
+      - REJECT-DROP
+      - REJECT        # 选这个：开启广告拦截（直接丢弃数据包）
+      - DIRECT        # 选这个：关闭广告拦截（让广告数据包直连通过）
+      
+  - name: 🎥 奈飞视频
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
+      #- 🇨🇳 台湾节点
+      #- 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      #- 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+  - name: 📺 苹果影视
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - DIRECT
+      - 🇭🇰 香港节点
+      #- 🇨🇳 台湾节点
+      #- 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      #- 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+
+  - name: 🎵 苹果音乐
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - DIRECT
+      - 🇭🇰 香港节点
+      #- 🇨🇳 台湾节点
+      #- 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      #- 🇰🇷 韩国节点
+      - 🚀 手动切换
+
+  - name: 📺 巴哈姆特
+    type: select
+    proxies:
+      - 🚀 节点选择
+     # - 🇨🇳 台湾节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+
+  - name: 📺 哔哩哔哩
+    type: select
+    proxies:
+      - 🎯 全球直连
+    #  - 🇨🇳 台湾节点
+      - 🇭🇰 香港节点
+
+  - name: 🌍 国外媒体
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
+      #- 🇨🇳 台湾节点
+      #- 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      #- 🇰🇷 韩国节点
+      - ✈️ 机场节点
+      - 🚀 手动切换
+
+  - name: 🌏 国内媒体
+    type: select
+    proxies:
+      - DIRECT
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🚀 手动切换
+      
+  - name: 📢 谷歌FCM
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - DIRECT
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      
+  - name: 🐦 推特消息
+    type: select
+    proxies:
+      - 🌱 原生节点
+      - 🚀 节点选择
+      - ♻️ 自动选择
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+
+  - name: Ⓜ️ 微软Bing
+    type: select
+    proxies:
+      - 🌱 原生节点
+      - 🚀 节点选择
+      - 🇯🇵 日本节点      
+      - DIRECT
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+      
+  - name: Ⓜ️ 微软云盘
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+      - DIRECT
+    #  - 🇨🇳 台湾节点
+    #  - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+    #  - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+  - name: Ⓜ️ 微软服务
+    type: select
+    proxies:
+      - 🚀 节点选择    
+      - 🌱 原生节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+      - DIRECT
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+  - name: 🍎 苹果服务
+    type: select
+    proxies:
+      - 🚀 节点选择    
+      - 🌱 原生节点
+      - DIRECT      
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+    #  - 🇨🇳 台湾节点
+    #  - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+    #  - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+  - name: 💶 贝宝支付
+    type: select
+    proxies:
+      - 🇺🇲 美国节点
+      - 🌱 原生节点
+      - 🚀 节点选择
+      - ♻️ 自动选择
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - DIRECT
+      
+  - name: 🎮 游戏平台
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - DIRECT
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+     # - 🇰🇷 韩国节点
+      - ✈️ 机场节点
+      - 🚀 手动切换
+      
+  - name: 🎶 网易音乐
+    type: select
+    include-all: true
+    filter: (?i)网易|音乐|NetEase|Music
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+      - ♻️ 自动选择
+
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+      - ♻️ 自动选择
+
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies:
+      - ♻️ 自动选择
+      - 🇭🇰 香港节点
+     # - 🇨🇳 台湾节点
+     # - 🇸🇬 狮城节点
+      - 🇯🇵 日本节点
+      - 🇺🇲 美国节点
+     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+      - ✈️ 机场节点
+      
+  - name: 🕳 纯IP黑洞节点
+    type: select
+    proxies:
+      - REJECT-DROP
+      - REJECT
+      - 🇺🇲 美国节点
+      - 🇯🇵 日本节点
+      - 🇭🇰 香港节点
+      - 🚀 手动切换    
+      - ✈️ 机场节点
+      
+    
+  # === 机场节点 (Emby专用) ===
+  - name: ✈️ 机场节点
+    include-all: true
+    # 只抓取带有 BGP 或 NF 的机场节点
+    filter: (?i)BGP|NF
+    # 极其重要：务必把 10倍率 的应急节点排除掉，防止看视频流量暴走
+    exclude-filter: 应急|10X|10倍率|V3
+    type: url-test
+    interval: 300
+    tolerance: 50
+
+  # === 自建区域组 ===
+  - name: 🇭🇰 香港节点
+    include-all: true
+    filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
+    # 排除所有机场特征：BGP、NF 以及那个特殊的应急节点
+    exclude-filter: (?i)BGP|NF|应急
+    type: url-test
+    interval: 300
+    tolerance: 50
+
+  - name: 🇯🇵 日本节点
+    include-all: true
+    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan
+    exclude-filter: (?i)BGP|NF|应急|Native|Zouter|原生
+    type: url-test
+    interval: 300
+    tolerance: 50
+
+  - name: 🇺🇲 美国节点
+    include-all: true
+    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States
+    exclude-filter: (?i)BGP|NF|应急
+    type: url-test
+    interval: 300
+    tolerance: 50
+
+ # - name: 🇨🇳 台湾节点
+ #   include-all: true
+ #   filter: (?i)台|新北|彰化|TW|Taiwan
+ #   exclude-filter: (?i)BGP|NF|应急
+ #   type: url-test
+ #   interval: 300
+ #   tolerance: 50
+
+ # - name: 🇸🇬 狮城节点
+ #   include-all: true
+ #   filter: (?i)新加坡|坡|狮城|SG|Singapore
+ #   exclude-filter: (?i)BGP|NF|应急
+ #   type: url-test
+ #   interval: 300
+ #   tolerance: 50
+
+ # - name: 🇰🇷 韩国节点
+ #   include-all: true
+ #   filter: (?i)KR|Korea|KOR|首尔|韩|韓
+ #   exclude-filter: (?i)BGP|NF|应急
+ #   type: url-test
+ #   interval: 300
+ #   tolerance: 50
+
+rule-providers:
+  # --- 局域网 & 直连 ---
+  LocalAreaNetwork:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.yaml"
+    path: ./ruleset/Lan.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  Download:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Download/Download.yaml"
+    path: ./ruleset/Download.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  # --- 谷歌系 (已修复 404/403) ---
+  GoogleFCM:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.yaml"
+    path: ./ruleset/GoogleFCM.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  # [新增] 完整的 Google 规则 (替换失效的 GoogleCN)
+  Google:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    path: ./ruleset/Google.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  GoogleVoice:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleVoice/GoogleVoice.yaml"
+    path: ./ruleset/GoogleVoice.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  # --- 微软系 ---
+  Bing:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.yaml"
+    path: ./ruleset/Bing.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  OneDrive:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OneDrive/OneDrive.yaml"
+    path: ./ruleset/OneDrive.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Microsoft:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
+    path: ./ruleset/Microsoft.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  # --- 苹果系 ---
+  Apple:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple_Classical.yaml"
+    path: ./ruleset/Apple.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+    
+  AppleMail:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleMail/AppleMail.yaml"
+    path: ./ruleset/AppleMail.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http    
+    
+  AppleTV:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleTV/AppleTV.yaml"
+    path: ./ruleset/AppleTV.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  AppleMusic:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleMusic/AppleMusic.yaml"
+    path: ./ruleset/AppleMusic.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  iCloud:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/iCloud/iCloud.yaml"
+    path: ./ruleset/iCloud.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+
+  # --- 社交与AI ---
+  Telegram:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./ruleset/Telegram.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Twitter:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
+    path: ./ruleset/Twitter.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  OpenAi:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+    path: ./ruleset/OpenAI.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Gemini:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
+    path: ./ruleset/Gemini.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+  ai:
+    url: "https://yfamilys.com/rule/ai.rule"
+    path: ./ruleset/ai.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+    
+  Duolingo:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Duolingo/Duolingo.yaml"
+    path: ./ruleset/Duolingo.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http   
+    
+  # --- 游戏平台 ---
+  GitHub:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
+    path: ./ruleset/Github.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+  SteamCN:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml"
+    path: ./ruleset/SteamCN.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Steam:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.yaml"
+    path: ./ruleset/Steam.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Epic:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Epic/Epic.yaml"
+    path: ./ruleset/Epic.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Origin:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Origin/Origin.yaml"
+    path: ./ruleset/Origin.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Sony:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Sony/Sony.yaml"
+    path: ./ruleset/Sony.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Nintendo:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nintendo/Nintendo.yaml"
+    path: ./ruleset/Nintendo.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  # --- 视频与流媒体 ---
+  YouTube:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    path: ./ruleset/YouTube.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Netflix:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
+    path: ./ruleset/Netflix.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Bahamut:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bahamut/Bahamut.yaml"
+    path: ./ruleset/Bahamut.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+# [修复] 修正了大小写 (BiliBili)，且移除了不存在的 HMT 文件
+  Bilibili:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml"
+    path: ./ruleset/Bilibili.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  NetEaseMusic:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml"
+    path: ./ruleset/NetEaseMusic.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+  # --- 综合类 (这里是修复的重点) ---
+  ChinaMedia:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
+    path: ./ruleset/ChinaMedia.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  ProxyMedia:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml"
+    path: ./ruleset/GlobalMedia.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  ProxyGFWlist:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.yaml"
+    path: ./ruleset/Proxy.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+       
+  ChinaMax:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax_Classical.yaml"
+    path: ./ruleset/ChinaMax.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http    
+    
+
+  PayPal:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.yaml"
+    path: ./ruleset/PayPal.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  #币安 
+  Binance:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Binance/Binance.yaml"
+    path: ./ruleset/Binance.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  #OKX
+  OKX:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OKX/OKX.yaml"
+    path: ./ruleset/OKX.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    #其他加密货币
+  Cryptocurrency:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cryptocurrency/Cryptocurrency.yaml"
+    path: ./ruleset/Cryptocurrency.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+   
+  #国内常用 
+  Xiaomi:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/XiaoMi/XiaoMi.yaml"
+    path: ./ruleset/Xiaomi.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+    
+  Jingdong:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/JingDong/JingDong.yaml"
+    path: ./ruleset/Jingdong.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+  Alibaba:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Alibaba/Alibaba_Classical.yaml"
+    path: ./ruleset/Alibaba.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+  Majsoul:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Majsoul/Majsoul.yaml"
+    path: ./ruleset/Majsoul.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+  Advertising:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising_Classical.yaml"
+    path: ./ruleset/Advertising.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+    
+  Privacy:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy_Classical.yaml"
+    path: ./ruleset/Privacy.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+    
+  Hijacking:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Hijacking/Hijacking.yaml"
+    path: ./ruleset/Hijacking.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+
+
+  meituan:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/MeiTuan/MeiTuan.yaml"
+    path: ./ruleset/meituan.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+    
+  # --- 国内 ASN 规则库 ---
+  ASN-CN:
+    url: "https://yfamilys.com/rule/ASN-CN.rule"
+    path: ./ruleset/ASN-CN.list
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http    
+
+  WeChat:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
+    path: ./ruleset/WeChat.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+    
+  Tencent:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Tencent/Tencent.yaml"
+    path: ./ruleset/Tencent.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http  
+
+rules:
+  #正常规则
+  - "RULE-SET,LocalAreaNetwork,🎯 全球直连"
+  # 👇 [关键优化] BT/PT/P2P下载必须放在最高优先级强制直连，防止封号！
+  - "RULE-SET,Download,🎯 全球直连"
+  
+  # >>> 核心修改：放行 Nikki 自身的 DNS 查询请求 (DNS VIP通道) <<<
+  - "IP-CIDR,1.1.1.1/32,🚀 手动切换,no-resolve"
+  - "IP-CIDR,8.8.8.8/32,🚀 手动切换,no-resolve"
+  - "IP-CIDR,223.5.5.5/32,🎯 全球直连,no-resolve"
+  - "IP-CIDR,223.6.6.6/32,🎯 全球直连,no-resolve"
+  - "IP-CIDR,1.12.12.12/32,🎯 全球直连,no-resolve"
+  
+  # 优先放行主机 IP：PS5 和 Xbox 的所有流量（包含 STUN），直连或走特定游戏节点
+  - 'SRC-IP-CIDR,192.168.6.64/27,🎮 游戏平台'
+  
+  # 微信优先直连，避免被 STUN/UDP 规则误伤
+  - "RULE-SET,WeChat,🎯 全球直连"
+  # 可选：如果微信仍然卡，再打开 Tencent
+  # - "RULE-SET,Tencent,🎯 全球直连"
+  
+  #禁止QUIC，放在首位确保优先级最高，不经过任何分流直接拒绝，迫使流量瞬间回退到 TCP
+  #- AND,((OR,((DST-PORT,443),(DST-PORT,8443))),(NETWORK,UDP)),REJECT
+  # 禁止海外 QUIC：国内 UDP/443 保留，海外 UDP/443/8443 拒绝，迫使海外流量回落 TCP
+  - "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOIP,CN)))),REJECT"  
+  
+  #webrtc，防止泄露
+  - DOMAIN-KEYWORD,stun,REJECT
+  - DST-PORT,3478,REJECT
+  - DST-PORT,19302,REJECT
+  
+  #AdGuard
+  - DOMAIN,injections.adguard.org,🚀 节点选择
+  - DOMAIN,local.adguard.org,REJECT
+  
+  
+  ##封禁OpenAI的udp流量
+  #- AND,((DOMAIN-SUFFIX,chatgpt.com),(NETWORK,UDP)),REJECT
+  #- AND,((DOMAIN-SUFFIX,openai.com),(NETWORK,UDP)),REJECT
+  #- AND,((DOMAIN-SUFFIX,oaistatic.com),(NETWORK,UDP)),REJECT
+  #- AND,((DOMAIN-SUFFIX,oaiusercontent.com),(NETWORK,UDP)),REJECT
+
+  # --- AI系 ---
+  - "RULE-SET,Gemini,💬 GoogleAI"
+  - "RULE-SET,OpenAi,💬 GoogleAI"
+  - "RULE-SET,ai,💬 GoogleAI"
+  
+  
+  ##Duolingo
+  - "RULE-SET,Duolingo,🚀 手动切换"
+  
+  # --- Google系 ---
+  - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
+  - "RULE-SET,YouTube,📹 油管视频"
+  - "RULE-SET,GoogleFCM,📢 谷歌FCM"
+  - "RULE-SET,Google,💬 GoogleAI"
+
+  # --- Apple系 ---
+  - "RULE-SET,AppleTV,📺 苹果影视"
+  - "RULE-SET,AppleMusic,🎵 苹果音乐"
+  - "RULE-SET,AppleMail,🍎 苹果服务"
+  - "RULE-SET,iCloud,🍎 苹果服务"
+  - "RULE-SET,Apple,🍎 苹果服务"
+  - "GEOSITE,apple,🍎 苹果服务"
+  
+  # --- 支付系 ---
+  - "RULE-SET,PayPal,💶 贝宝支付"
+  - "RULE-SET,Binance,🇯🇵 日本节点"
+  - "RULE-SET,OKX,🇯🇵 日本节点"
+  - "RULE-SET,Cryptocurrency,🇯🇵 日本节点"
+  
+  
+  # --- 微软系 ---
+  - "RULE-SET,GitHub,🚀 节点选择"  
+  - "RULE-SET,Bing,Ⓜ️ 微软Bing"
+  - "RULE-SET,OneDrive,Ⓜ️ 微软云盘"
+  - "RULE-SET,Microsoft,Ⓜ️ 微软服务"
+  
+  # --- 游戏与其他特定应用 ---
+  # 1. 雀魂 & 悠星 (Yostar) 垃圾遥测与追踪阻断 (必须放最前面)
+  # ==========================================
+  - DOMAIN,majsoul-us-client.us-east-1.log.aliyuncs.com,REJECT
+  - DOMAIN,yostar-oversea-client-logging.ap-southeast-1.log.aliyuncs.com,REJECT
+  - DOMAIN,majsoul-hk-client.cn-hongkong.log.aliyuncs.com,REJECT
+  - DOMAIN-KEYWORD,client-logging,REJECT
+  # 顺手干掉刚才日志里疯狂耗电的 Adjust 商业追踪器
+  - DOMAIN-SUFFIX,adjust.com,REJECT
+
+  # [防掉线关键] 悠星 Yostar 登录验证、SDK与回调 API
+  - DOMAIN-SUFFIX,yostarplat.com,🎮 游戏平台
+  - DOMAIN-SUFFIX,yo-star.com,🎮 游戏平台
+
+  # 雀魂国际服（英文服）核心游戏与资源域名
+  - DOMAIN-SUFFIX,mahjongsoul.com,🎮 游戏平台
+
+  # 雀魂日服、国服核心域名
+  - DOMAIN-SUFFIX,maj-soul.com,🎮 游戏平台
+
+  # 雀魂开发商（猫粮工作室）域名
+  - DOMAIN-SUFFIX,catmjstudio.com,🎮 游戏平台
+
+  # [兜底防御] 包含雀魂关键字的未知二级域名
+  - DOMAIN-KEYWORD,mahjongsoul,🎮 游戏平台
+  - DOMAIN-KEYWORD,majsoul,🎮 游戏平台
+  
+  - "RULE-SET,SteamCN,🎯 全球直连"
+  - "RULE-SET,Twitter,🐦 推特消息"
+  - "RULE-SET,Telegram,📲 电报消息"
+  - "RULE-SET,NetEaseMusic,🎶 网易音乐"
+  - "RULE-SET,Epic,🎮 游戏平台"
+  - "RULE-SET,Origin,🎮 游戏平台"
+  - "RULE-SET,Sony,🎮 游戏平台"
+  - "RULE-SET,Steam,🎮 游戏平台"
+  - "RULE-SET,Nintendo,🎮 游戏平台"
+  - "RULE-SET,Majsoul,🎮 游戏平台"
+
+  - "RULE-SET,Netflix,🎥 奈飞视频"
+  - "RULE-SET,Bahamut,📺 巴哈姆特"
+  - "RULE-SET,Bilibili,📺 哔哩哔哩"
+  
+  # === Emby 观影规则 ===
+  # 墨白 Emby (mobaiemby.site 包含 m 和 myg2 两个子域名)
+  - DOMAIN-SUFFIX,mobaiemby.site,📺 Emby观影
+  # UHDNow Emby
+  #- DOMAIN-KEYWORD,uhdnow,📺 Emby观影
+ 
+  # --- 如果后续有其他 Emby，直接按格式加在下面 ---
+  # - DOMAIN-SUFFIX,新域名.com,📺 Emby观影
+  # 常见的流媒体服务也可以考虑加入（可选）
+  #- DOMAIN-KEYWORD,emby,📺 Emby观影
+  
+ 
+  
+  #国内电商和常用规则
+  - "RULE-SET,Xiaomi,🎯 全球直连"
+  - "RULE-SET,Alibaba,🎯 全球直连"
+  - "RULE-SET,Jingdong,🎯 全球直连"
+  - "RULE-SET,meituan,🎯 全球直连"
+  
+  # 👇 将去广告规则指向面板策略组 👇
+  - "RULE-SET,Advertising,🛑 广告拦截"
+  ## 下面的一般不开启，有问题（误杀）
+  #- "RULE-SET,Privacy,🛑 广告拦截"
+  #- "RULE-SET,Hijacking,🛑 广告拦截"
+  
+  
+  # --- 域名后缀匹配 (DOMAIN-SUFFIX) ---
+  - "DOMAIN-SUFFIX,066655.xyz,🎯 全球直连"
+  - "DOMAIN-SUFFIX,yandex.ru,🇺🇲 美国节点"
+  - "DOMAIN-SUFFIX,jdbstatic.com,🇺🇲 美国节点"
+  
+  # --- 域名关键字匹配 (DOMAIN-KEYWORD) ---
+  - "DOMAIN-KEYWORD,nodeseek,🚀 手动切换"
+  - "DOMAIN-KEYWORD,javdb,🇺🇲 美国节点"
+  
+  # >>> 海外大厂纯 IP 保护名单 (防绞杀网误杀) <<<
+  # Telegram (纯 IP 狂魔，必须放行，否则一直转圈)
+  - "IP-ASN,62041,📲 电报消息,no-resolve"
+  - "IP-ASN,59930,📲 电报消息,no-resolve"
+  - "IP-ASN,44907,📲 电报消息,no-resolve"
+  - "IP-ASN,211157,📲 电报消息,no-resolve"
+  - "IP-ASN,62014,📲 电报消息,no-resolve"
+  
+  # Google / YouTube (防止极端情况下的纯IP回源)
+  - "IP-ASN,15169,💬 GoogleAI,no-resolve"
+  
+  # Cloudflare (很多海外冷门 App 和代理工具的 API 会直连 CF 的 IP)
+  - "IP-ASN,13335,🚀 手动切换,no-resolve"
+  
+  # 微软 / Xbox (如果你有外服游戏联机需求，放行微软云)
+  - "IP-ASN,8075,Ⓜ️ 微软服务,no-resolve"
+  
+
+  
+  # --- 大类兜底匹配 ---
+  - "RULE-SET,ChinaMedia,🌏 国内媒体"
+  - "RULE-SET,ProxyMedia,🌍 国外媒体"
+  - "RULE-SET,ProxyGFWlist,🌐 国外通用"
+
+  # 国内域名 / 国内大规则直连
+  - "GEOSITE,cn,🎯 全球直连"
+  - "RULE-SET,ChinaMax,🎯 全球直连"
+
+  # 已知海外域名走代理
+  - "GEOSITE,geolocation-!cn,🌐 国外通用"
+
+  # 国内 IP / ASN 直连
+  - "GEOIP,CN,🎯 全球直连"
+  - "RULE-SET,ASN-CN,🎯 全球直连"
+
+  # 无域名纯 IP：进入专用策略组，可选 REJECT-DROP 或固定污染出口
+  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR,0.0.0.0/0,no-resolve)),🕳 纯IP黑洞节点"
+  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR6,::/0,no-resolve)),🕳 纯IP黑洞节点"
+
+  # 剩余流量
+  - "MATCH,🐟 漏网之鱼"

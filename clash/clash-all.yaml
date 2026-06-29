@@ -1,6 +1,8 @@
-##clash配置模板，修改自用版本，修改于26/6/24 18:46
+# Clash / mihomo 配置模板（Sub-Store 调用版）
+# Template: clash-all
+# Version: v2026.06.29-1
+# Date: 修改于 2026/6/29
 
-# --- 嗅探器配置 (放置在这里) ---
 sniffer:
   enable: true
   parse-pure-ip: true

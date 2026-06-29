@@ -16,6 +16,9 @@ proxy-configs/
 │   ├── clash4me.yaml        # 常用 Clash / mihomo 模板：原生节点 + 机场节点
 │   ├── clash-all.yaml       # 备用 Clash / mihomo 模板：不含原生节点
 │   └── README.md
+├── loon/
+│   ├── loon.conf            # Loon 指定 Wi-Fi 自动直连模板
+│   └── README.md
 ├── docs/
 │   └── substore-usage.md
 └── README.md
@@ -29,7 +32,8 @@ proxy-configs/
 
 ## 已迁移模板
 
-| 文件 | 原 Gist | 状态 | Raw URL |
-|---|---|---|---|
-| `clash/clash4me.yaml` | `clash4me` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash4me.yaml` |
-| `clash/clash-all.yaml` | `clash-all` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash-all.yaml` |
+| 文件 | 类型 | 版本 | 状态 | Raw URL |
+|---|---|---|---|---|
+| `clash/clash4me.yaml` | Clash / mihomo | `v2026.06.29-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash4me.yaml` |
+| `clash/clash-all.yaml` | Clash / mihomo | `v2026.06.29-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash-all.yaml` |
+| `loon/loon.conf` | Loon | `v2026.06.29-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/loon/loon.conf` |

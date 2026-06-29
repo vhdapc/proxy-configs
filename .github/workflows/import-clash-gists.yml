@@ -49,3 +49,5 @@ jobs:
             git commit -m 'Import Clash templates from Gist'
             git push
           fi
+
+# Updated by ChatGPT to trigger the first import run.

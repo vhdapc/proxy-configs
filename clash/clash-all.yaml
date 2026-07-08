@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash-all
-# Version: v2026.06.29-1
-# Date: 修改于 2026/6/29
+# Version: v2026.07.08-1
+# Date: 修改于 2026/7/8
 
 sniffer:
   enable: true
@@ -951,6 +951,7 @@ rules:
   
   # --- 域名后缀匹配 (DOMAIN-SUFFIX) ---
   - "DOMAIN-SUFFIX,066655.xyz,🎯 全球直连"
+  - "DOMAIN-SUFFIX,po0.com,🎯 全球直连"
   - "DOMAIN-SUFFIX,yandex.ru,🇺🇲 美国节点"
   - "DOMAIN-SUFFIX,jdbstatic.com,🇺🇲 美国节点"
   

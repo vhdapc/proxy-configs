@@ -1,0 +1,123 @@
+name: Add po0.com direct rule
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-po0-direct-rule.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add po0.com direct rules and bump versions
+        shell: python
+        run: |
+          from pathlib import Path
+
+          version = 'v2026.07.08-1'
+          date = '2026/7/8'
+
+          clash_files = {
+              Path('clash/clash-all.yaml'): 'clash-all',
+              Path('clash/clash4me.yaml'): 'clash4me',
+          }
+
+          for path, template_name in clash_files.items():
+              text = path.read_text(encoding='utf-8')
+              lines = text.splitlines()
+
+              # Normalize header.
+              start = 0
+              for i, line in enumerate(lines):
+                  if line.strip() == 'sniffer:':
+                      start = i
+                      break
+              body = lines[start:]
+              header = [
+                  '# Clash / mihomo 配置模板（Sub-Store 调用版）',
+                  f'# Template: {template_name}',
+                  f'# Version: {version}',
+                  f'# Date: 修改于 {date}',
+                  '',
+              ]
+              lines = header + body
+
+              rule = '  - "DOMAIN-SUFFIX,po0.com,🎯 全球直连"'
+              if not any('DOMAIN-SUFFIX,po0.com' in line for line in lines):
+                  inserted = False
+                  for i, line in enumerate(lines):
+                      if 'DOMAIN-SUFFIX,066655.xyz' in line:
+                          lines.insert(i + 1, rule)
+                          inserted = True
+                          break
+                  if not inserted:
+                      for i, line in enumerate(lines):
+                          if '# --- 域名后缀匹配' in line:
+                              lines.insert(i + 1, rule)
+                              inserted = True
+                              break
+                  if not inserted:
+                      raise RuntimeError(f'Cannot find insertion point in {path}')
+
+              path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          loon_path = Path('loon/loon.conf')
+          lines = loon_path.read_text(encoding='utf-8').splitlines()
+          lines = [
+              f'# Date: 根据可莉版本合并自身需求修改于 {date}' if line.startswith('# Date:') else
+              f'# Version: {version}' if line.startswith('# Version:') else
+              line
+              for line in lines
+          ]
+          loon_rule = 'DOMAIN-SUFFIX, po0.com, DIRECT'
+          if not any('DOMAIN-SUFFIX, po0.com' in line or 'DOMAIN-SUFFIX,po0.com' in line for line in lines):
+              inserted = False
+              for i, line in enumerate(lines):
+                  if line.strip().startswith('DOMAIN-SUFFIX, 066655.xyz'):
+                      lines.insert(i + 1, loon_rule)
+                      inserted = True
+                      break
+              if not inserted:
+                  for i, line in enumerate(lines):
+                      if '# 自定义域名规则' in line:
+                          lines.insert(i + 1, loon_rule)
+                          inserted = True
+                          break
+              if not inserted:
+                  raise RuntimeError('Cannot find insertion point in loon/loon.conf')
+
+          loon_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          # Update README version table if present.
+          readme = Path('README.md')
+          if readme.exists():
+              text = readme.read_text(encoding='utf-8')
+              text = text.replace('`v2026.06.29-1`', f'`{version}`')
+              readme.write_text(text, encoding='utf-8')
+
+          loon_readme = Path('loon/README.md')
+          if loon_readme.exists():
+              text = loon_readme.read_text(encoding='utf-8')
+              text = text.replace('`v2026.06.29-1`', f'`{version}`')
+              loon_readme.write_text(text, encoding='utf-8')
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add clash/clash-all.yaml clash/clash4me.yaml loon/loon.conf README.md loon/README.md
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+          else
+            git commit -m 'Add po0.com direct rules and bump templates to v2026.07.08-1'
+            git push
+          fi

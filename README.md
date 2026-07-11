@@ -36,4 +36,4 @@ proxy-configs/
 |---|---|---|---|---|
 | `clash/clash4me.yaml` | Clash / mihomo | `v2026.07.08-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash4me.yaml` |
 | `clash/clash-all.yaml` | Clash / mihomo | `v2026.07.08-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/clash-all.yaml` |
-| `loon/loon.conf` | Loon | `v2026.07.08-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/loon/loon.conf` |
+| `loon/loon.conf` | Loon | `v2026.07.11-1` | 已导入 | `https://raw.githubusercontent.com/vhdapc/proxy-configs/main/loon/loon.conf` |

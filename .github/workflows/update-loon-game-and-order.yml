@@ -1,0 +1,26 @@
+name: Update Loon game filter and policy order
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-loon-game-and-order.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update loon.conf
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('loon/loon.conf')
+          version = 'v2026.07.11-1'
+          date = '202

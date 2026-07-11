@@ -20,7 +20,68 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           path = Path('loon/loon.conf')
+          text = path.read_text(encoding='utf-8')
+
           version = 'v2026.07.11-1'
-          date = '202
+          date = '2026/7/11'
+
+          text = re.sub(r'^# Date:.*$', f'# Date: 根据可莉版本合并自身需求修改于 {date}', text, count=1, flags=re.M)
+          text = re.sub(r'^# Version:.*$', f'# Version: {version}', text, count=1, flags=re.M)
+
+          # 游戏节点增加日本节点匹配，保留原有 Rfc / GAME 逻辑
+          text = re.sub(
+              r'^游戏节点=.*$',
+              '游戏节点=NameRegex, FilterKey="^(?=.*((?i)游戏|🎮|Rfc|日本|东京|大阪|川日|泉日|埼玉|(\\b(JP|JPN|Japan|GAME)(\\d+)?\\b)))(?!.*((?i)回国|校园)).*$"',
+              text,
+              count=1,
+              flags=re.M
+          )
+
+          start = text.index('[Proxy Group]')
+          end = text.index('[Rule]')
+          before = text[:start]
+          section = text[start:end]
+          after = text[end:]
+
+          lines = section.splitlines()
+          group_lines = [x for x in lines if '=' in x and not x.strip().startswith('#')]
+
+          wanted = [
+              '自动代理场景',
+              '自动代理策略',
+              '国外通用策略',
+              '原生时延优选',
+              '日本时延优选',
+              '香港时延优选',
+              '游戏时延优选',
+              '原生代理场景',
+              '国外通用场景',
+              '兜底代理场景',
+          ]
+
+          def name_of(line):
+              return line.split('=', 1)[0].strip()
+
+          mapping = {name_of(x): x for x in group_lines}
+          ordered = [mapping[x] for x in wanted if x in mapping]
+          ordered += [x for x in group_lines if name_of(x) not in wanted]
+
+          new_section = '[Proxy Group]\n\n' + '\n\n'.join(ordered) + '\n\n'
+          path.write_text(before + new_section + after.lstrip(), encoding='utf-8')
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add loon/loon.conf
+          if git diff --cached --quiet; then
+            echo 'No changes.'
+          else
+            git commit -m 'Update Loon game nodes and proxy group order v2026.07.11-1'
+            git push
+          fi

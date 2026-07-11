@@ -16,43 +16,108 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Update loon.conf
+      - name: Update Loon configuration
         shell: python
         run: |
           from pathlib import Path
-          import re
-          path = Path('loon/loon.conf')
-          text = path.read_text(encoding='utf-8')
+
           version = 'v2026.07.11-1'
           date = '2026/7/11'
-          text = re.sub(r'^# Date:.*$', f'# Date: 根据可莉版本合并自身需求修改于 {date}', text, count=1, flags=re.M)
-          text = re.sub(r'^# Version:.*$', f'# Version: {version}', text, count=1, flags=re.M)
-          text = re.sub(r'^游戏节点=.*$', '游戏节点=NameRegex, FilterKey="^(?=.*((?i)游戏|🎮|Rfc|日本|东京|大阪|川日|泉日|埼玉|(\\b(JP|JPN|Japan|GAME)(\\d+)?\\b)))(?!.*((?i)回国|校园)).*$"', text, count=1, flags=re.M)
-          start = text.index('[Proxy Group]')
-          end = text.index('[Rule]')
-          before = text[:start]
-          section = text[start:end]
-          after = text[end:]
-          lines = section.splitlines()
-          group_lines = [x for x in lines if '=' in x and not x.strip().startswith('#')]
-          wanted = ['自动代理场景','自动代理策略','国外通用策略','原生时延优选','日本时延优选','香港时延优选','游戏时延优选','原生代理场景','国外通用场景','兜底代理场景']
-          def name_of(line): return line.split('=',1)[0].strip()
-          mapping = {name_of(x): x for x in group_lines}
-          ordered = [mapping[x] for x in wanted if x in mapping] + [x for x in group_lines if name_of(x) not in wanted]
-          path.write_text(before + '[Proxy Group]\n\n' + '\n\n'.join(ordered) + '\n\n' + after.lstrip(), encoding='utf-8')
+          path = Path('loon/loon.conf')
+          lines = path.read_text(encoding='utf-8').splitlines()
 
-      - name: Commit changes
+          game_filter = r'游戏节点=NameRegex, FilterKey="^(?=.*((?i)游戏|🎮|Rfc|日本|东京|大阪|川日|泉日|埼玉|(\b(JP|JPN|Japan|GAME)(\d+)?\b)))(?!.*((?i)回国|校园)).*$"'
+
+          date_updated = False
+          version_updated = False
+          game_filter_updated = False
+
+          for index, line in enumerate(lines):
+              if line.startswith('# Date:'):
+                  lines[index] = f'# Date: 根据可莉版本合并自身需求修改于 {date}'
+                  date_updated = True
+              elif line.startswith('# Version:'):
+                  lines[index] = f'# Version: {version}'
+                  version_updated = True
+              elif line.startswith('游戏节点='):
+                  lines[index] = game_filter
+                  game_filter_updated = True
+
+          if not all((date_updated, version_updated, game_filter_updated)):
+              raise RuntimeError('未找到日期、版本号或游戏节点过滤器，停止修改')
+
+          section_start = lines.index('[Proxy Group]')
+          section_end = lines.index('[Rule]')
+          group_lines = [
+              line for line in lines[section_start + 1:section_end]
+              if line.strip() and not line.lstrip().startswith('#') and '=' in line
+          ]
+
+          preferred_order = [
+              '自动代理场景',
+              '自动代理策略',
+              '国外通用策略',
+              '原生时延优选',
+              '日本时延优选',
+              '香港时延优选',
+              '游戏时延优选',
+              '原生代理场景',
+              '国外通用场景',
+              '兜底代理场景',
+          ]
+
+          def group_name(line):
+              return line.split('=', 1)[0].strip()
+
+          groups = {group_name(line): line for line in group_lines}
+          missing = [name for name in preferred_order if name not in groups]
+          if missing:
+              raise RuntimeError(f'缺少需要排序的策略组: {missing}')
+
+          ordered_groups = [groups[name] for name in preferred_order]
+          ordered_groups.extend(
+              line for line in group_lines
+              if group_name(line) not in preferred_order
+          )
+
+          rebuilt_section = [
+              '[Proxy Group]',
+              '# 首页优先显示策略组',
+              '',
+          ]
+          for line in ordered_groups:
+              rebuilt_section.extend([line, ''])
+
+          lines = lines[:section_start] + rebuilt_section + lines[section_end:]
+          path.write_text('\n'.join(lines).rstrip() + '\n', encoding='utf-8')
+
+          loon_readme = Path('loon/README.md')
+          if loon_readme.exists():
+              text = loon_readme.read_text(encoding='utf-8')
+              text = text.replace('v2026.07.08-1', version)
+              loon_readme.write_text(text, encoding='utf-8')
+
+          root_readme = Path('README.md')
+          if root_readme.exists():
+              readme_lines = root_readme.read_text(encoding='utf-8').splitlines()
+              for index, line in enumerate(readme_lines):
+                  if '`loon/loon.conf`' in line:
+                      parts = line.split('|')
+                      if len(parts) >= 6:
+                          parts[3] = f' `{version}` '
+                          readme_lines[index] = '|'.join(parts)
+              root_readme.write_text('\n'.join(readme_lines) + '\n', encoding='utf-8')
+
+      - name: Commit configuration changes
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add loon/loon.conf
+          git add loon/loon.conf loon/README.md README.md
           if git diff --cached --quiet; then
-            echo 'No changes.'
+            echo 'No changes to commit.'
           else
-            git commit -m 'Update Loon game nodes and proxy group order v2026.07.11-1'
+            git commit -m 'Update Loon game nodes and policy order v2026.07.11-1'
             git push
           fi
-
-# Trigger update 2026/7/11

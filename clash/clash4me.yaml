@@ -844,7 +844,7 @@ rules:
   #禁止QUIC，放在首位确保优先级最高，不经过任何分流直接拒绝，迫使流量瞬间回退到 TCP
   #- AND,((OR,((DST-PORT,443),(DST-PORT,8443))),(NETWORK,UDP)),REJECT
   # 禁止海外 QUIC：国内 UDP/443 保留，海外 UDP/443/8443 拒绝，迫使海外流量回落 TCP
-  - "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOIP,CN)))),REJECT"  
+  #- "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOIP,CN)))),REJECT"  
   
   #webrtc，防止泄露
   - DOMAIN-KEYWORD,stun,REJECT
@@ -880,7 +880,7 @@ rules:
   # --- Apple系 ---
   - "RULE-SET,AppleTV,📺 苹果影视"
   - "RULE-SET,AppleMusic,🎵 苹果音乐"
-  - "RULE-SET,AppleMail,🍎 苹果服务"
+  - "RULE-SET,AppleMail,📺 苹果影视"
   - "RULE-SET,iCloud,🍎 苹果服务"
   - "RULE-SET,Apple,🍎 苹果服务"
   - "GEOSITE,apple,🍎 苹果服务"

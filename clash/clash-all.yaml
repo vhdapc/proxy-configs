@@ -1,6 +1,6 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash-all
-# Version: v2026.08.09-1
+# Version: v2026.08.09-2
 # Date: 修改于 2026/8/9
 
 sniffer:
@@ -39,8 +39,16 @@ proxy-groups:
       - ✈️ 机场节点
       - 🚀 手动切换
       - ♻️ 自动选择
-      
-      
+
+  - name: 🌐 国外通用
+    type: select
+    proxies:
+      - 🇯🇵 日本节点
+      - 🇭🇰 香港节点
+      - 🇺🇲 美国节点
+      - ✈️ 机场节点
+      - 🚀 手动切换
+
   - name: 🚀 手动切换
     include-all: true
     exclude-filter: (?i)应急|10X|10倍率|V3
@@ -91,19 +99,6 @@ proxy-groups:
       - 🚀 手动切换
       - ✈️ 机场节点
 
-  - name: 📹 油管视频
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - 🇭🇰 香港节点
-      #- 🇨🇳 台湾节点
-      #- 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-      - 🇺🇲 美国节点
-      #- 🇰🇷 韩国节点
-      - ✈️ 机场节点
-      - 🚀 手动切换
-
   - name: 🛑 广告拦截
     type: select
     proxies:
@@ -112,97 +107,21 @@ proxy-groups:
       - REJECT        # 选这个：开启广告拦截（直接丢弃数据包）
       - DIRECT        # 选这个：关闭广告拦截（让广告数据包直连通过）
       
-  - name: 🎥 奈飞视频
+  - name: 🍎 Apple Proxy
     type: select
     proxies:
-      - 🚀 节点选择
-      - 🇭🇰 香港节点
-      #- 🇨🇳 台湾节点
-      #- 🇸🇬 狮城节点
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-      #- 🇰🇷 韩国节点
       - 🚀 手动切换
-      - ✈️ 机场节点
-      
-  - name: 📺 苹果影视
-    type: select
-    proxies:
       - 🚀 节点选择
       - DIRECT
-      - 🇭🇰 香港节点
-      #- 🇨🇳 台湾节点
-      #- 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-      - 🇺🇲 美国节点
-      #- 🇰🇷 韩国节点
-      - 🚀 手动切换
-      - ✈️ 机场节点
 
-  - name: 🎵 苹果音乐
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - DIRECT
-      - 🇭🇰 香港节点
-      #- 🇨🇳 台湾节点
-      #- 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-      - 🇺🇲 美国节点
-      #- 🇰🇷 韩国节点
-      - 🚀 手动切换
-
-  - name: 📺 巴哈姆特
-    type: select
-    proxies:
-      - 🚀 节点选择
-     # - 🇨🇳 台湾节点
-      - 🚀 手动切换
-      - ✈️ 机场节点
-
-  - name: 📺 哔哩哔哩
-    type: select
-    proxies:
-      - 🎯 全球直连
-    #  - 🇨🇳 台湾节点
-      - 🇭🇰 香港节点
-
-  - name: 🌍 国外媒体
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - 🇭🇰 香港节点
-      #- 🇨🇳 台湾节点
-      #- 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-      - 🇺🇲 美国节点
-      #- 🇰🇷 韩国节点
-      - ✈️ 机场节点
-      - 🚀 手动切换
-
-  - name: 🌏 国内媒体
+  - name: 🍏 其余 Apple
     type: select
     proxies:
       - DIRECT
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-      - 🚀 手动切换
-      
-  - name: 📢 谷歌FCM
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - DIRECT
-      - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-     # - 🇰🇷 韩国节点
-      - 🚀 手动切换
-      
+      - 🍎 Apple Proxy
+
   - name: 🐦 推特消息
     type: select
     proxies:
@@ -217,63 +136,16 @@ proxy-groups:
       - 🚀 手动切换
       - ✈️ 机场节点
 
-  - name: Ⓜ️ 微软Bing
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - 🇯🇵 日本节点      
-      - DIRECT
-      - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
-      - 🚀 手动切换
-      - ✈️ 机场节点
-      
-      
-  - name: Ⓜ️ 微软云盘
-    type: select
-    proxies:
-      - 🚀 节点选择
-      - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-      - DIRECT
-    #  - 🇨🇳 台湾节点
-    #  - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-    #  - 🇰🇷 韩国节点
-      - 🚀 手动切换
-      - ✈️ 机场节点
-      
   - name: Ⓜ️ 微软服务
     type: select
     proxies:
-      - 🚀 节点选择    
-      - 🇯🇵 日本节点
-      - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
+      - 🚀 节点选择
       - DIRECT
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
-      - 🚀 手动切换
-      - ✈️ 机场节点
-      
-  - name: 🍎 苹果服务
-    type: select
-    proxies:
-      - 🚀 节点选择    
-      - DIRECT      
+      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-    #  - 🇨🇳 台湾节点
-    #  - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-    #  - 🇰🇷 韩国节点
       - 🚀 手动切换
-      - ✈️ 机场节点
-      
+
   - name: 💶 贝宝支付
     type: select
     proxies:
@@ -302,22 +174,6 @@ proxy-groups:
       - ✈️ 机场节点
       - 🚀 手动切换
       
-  - name: 🎶 网易音乐
-    type: select
-    include-all: true
-    filter: (?i)网易|音乐|NetEase|Music
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
-      - ♻️ 自动选择
-
-  - name: 🎯 全球直连
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
-      - ♻️ 自动选择
-
   - name: 🐟 漏网之鱼
     type: select
     proxies:
@@ -325,14 +181,11 @@ proxy-groups:
       - ♻️ 自动选择
       - DIRECT
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-     # - 🇰🇷 韩国节点
       - 🚀 手动切换
       - ✈️ 机场节点
-      
+
   - name: 🕳 纯IP黑洞节点
     type: select
     proxies:
@@ -472,6 +325,14 @@ rule-providers:
     type: http
 
   # --- 苹果系 ---
+  APNs:
+    url: "https://raw.githubusercontent.com/vhdapc/proxy-configs/main/clash/rules/APNs.yaml"
+    path: ./ruleset/APNs.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
   Apple:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple_Classical.yaml"
     path: ./ruleset/Apple.yaml
@@ -805,24 +666,24 @@ rule-providers:
 
 rules:
   #正常规则
-  - "RULE-SET,LocalAreaNetwork,🎯 全球直连"
+  - "RULE-SET,LocalAreaNetwork,DIRECT"
   # 👇 [关键优化] BT/PT/P2P下载必须放在最高优先级强制直连，防止封号！
-  - "RULE-SET,Download,🎯 全球直连"
+  - "RULE-SET,Download,DIRECT"
   
   # >>> 核心修改：放行 Nikki 自身的 DNS 查询请求 (DNS VIP通道) <<<
   - "IP-CIDR,1.1.1.1/32,🚀 手动切换,no-resolve"
   - "IP-CIDR,8.8.8.8/32,🚀 手动切换,no-resolve"
-  - "IP-CIDR,223.5.5.5/32,🎯 全球直连,no-resolve"
-  - "IP-CIDR,223.6.6.6/32,🎯 全球直连,no-resolve"
-  - "IP-CIDR,1.12.12.12/32,🎯 全球直连,no-resolve"
+  - "IP-CIDR,223.5.5.5/32,DIRECT,no-resolve"
+  - "IP-CIDR,223.6.6.6/32,DIRECT,no-resolve"
+  - "IP-CIDR,1.12.12.12/32,DIRECT,no-resolve"
   
   # 优先放行主机 IP：PS5 和 Xbox 的所有流量（包含 STUN），直连或走特定游戏节点
   - 'SRC-IP-CIDR,192.168.6.64/27,🎮 游戏平台'
   
   # 微信优先直连，避免被 STUN/UDP 规则误伤
-  - "RULE-SET,WeChat,🎯 全球直连"
+  - "RULE-SET,WeChat,DIRECT"
   # 可选：如果微信仍然卡，再打开 Tencent
-  # - "RULE-SET,Tencent,🎯 全球直连"
+  # - "RULE-SET,Tencent,DIRECT"
   
   #禁止QUIC，放在首位确保优先级最高，不经过任何分流直接拒绝，迫使流量瞬间回退到 TCP
   #- AND,((OR,((DST-PORT,443),(DST-PORT,8443))),(NETWORK,UDP)),REJECT
@@ -856,17 +717,21 @@ rules:
   
   # --- Google系 ---
   - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
-  - "RULE-SET,YouTube,📹 油管视频"
-  - "RULE-SET,GoogleFCM,📢 谷歌FCM"
+  - "RULE-SET,YouTube,🌐 国外通用"
+  - "RULE-SET,GoogleFCM,🚀 节点选择"
   - "RULE-SET,Google,💬 GoogleAI"
 
   # --- Apple系 ---
-  - "RULE-SET,AppleTV,📺 苹果影视"
-  - "RULE-SET,AppleMusic,🎵 苹果音乐"
-  - "RULE-SET,AppleMail,📺 苹果影视"
-  - "RULE-SET,iCloud,🍎 苹果服务"
-  - "RULE-SET,Apple,🍎 苹果服务"
-  - "GEOSITE,apple,🍎 苹果服务"
+  # 需要海外出口的 Apple 服务：APNs / TV / Music / Mail
+  - "RULE-SET,APNs,🍎 Apple Proxy"
+  - "RULE-SET,AppleTV,🍎 Apple Proxy"
+  - "RULE-SET,AppleMusic,🍎 Apple Proxy"
+  - "RULE-SET,AppleMail,🍎 Apple Proxy"
+
+  # 其余 Apple 基础服务默认直连
+  - "RULE-SET,iCloud,🍏 其余 Apple"
+  - "RULE-SET,Apple,🍏 其余 Apple"
+  - "GEOSITE,apple,🍏 其余 Apple"
   
   # --- 支付系 ---
   - "RULE-SET,PayPal,💶 贝宝支付"
@@ -877,8 +742,8 @@ rules:
   
   # --- 微软系 ---
   - "RULE-SET,GitHub,🚀 节点选择"  
-  - "RULE-SET,Bing,Ⓜ️ 微软Bing"
-  - "RULE-SET,OneDrive,Ⓜ️ 微软云盘"
+  - "RULE-SET,Bing,Ⓜ️ 微软服务"
+  - "RULE-SET,OneDrive,Ⓜ️ 微软服务"
   - "RULE-SET,Microsoft,Ⓜ️ 微软服务"
   
   # --- 游戏与其他特定应用 ---
@@ -908,10 +773,10 @@ rules:
   - DOMAIN-KEYWORD,mahjongsoul,🎮 游戏平台
   - DOMAIN-KEYWORD,majsoul,🎮 游戏平台
   
-  - "RULE-SET,SteamCN,🎯 全球直连"
+  - "RULE-SET,SteamCN,DIRECT"
   - "RULE-SET,Twitter,🐦 推特消息"
   - "RULE-SET,Telegram,📲 电报消息"
-  - "RULE-SET,NetEaseMusic,🎶 网易音乐"
+  - "RULE-SET,NetEaseMusic,DIRECT"
   - "RULE-SET,Epic,🎮 游戏平台"
   - "RULE-SET,Origin,🎮 游戏平台"
   - "RULE-SET,Sony,🎮 游戏平台"
@@ -919,9 +784,9 @@ rules:
   - "RULE-SET,Nintendo,🎮 游戏平台"
   - "RULE-SET,Majsoul,🎮 游戏平台"
 
-  - "RULE-SET,Netflix,🎥 奈飞视频"
-  - "RULE-SET,Bahamut,📺 巴哈姆特"
-  - "RULE-SET,Bilibili,📺 哔哩哔哩"
+  - "RULE-SET,Netflix,🌐 国外通用"
+  - "RULE-SET,Bahamut,🌐 国外通用"
+  - "RULE-SET,Bilibili,DIRECT"
   
   # === Emby 观影规则 ===
   # 墨白 Emby (mobaiemby.site 包含 m 和 myg2 两个子域名)
@@ -937,10 +802,10 @@ rules:
  
   
   #国内电商和常用规则
-  - "RULE-SET,Xiaomi,🎯 全球直连"
-  - "RULE-SET,Alibaba,🎯 全球直连"
-  - "RULE-SET,Jingdong,🎯 全球直连"
-  - "RULE-SET,meituan,🎯 全球直连"
+  - "RULE-SET,Xiaomi,DIRECT"
+  - "RULE-SET,Alibaba,DIRECT"
+  - "RULE-SET,Jingdong,DIRECT"
+  - "RULE-SET,meituan,DIRECT"
   
   # 👇 将去广告规则指向面板策略组 👇
   - "RULE-SET,Advertising,🛑 广告拦截"
@@ -950,8 +815,8 @@ rules:
   
   
   # --- 域名后缀匹配 (DOMAIN-SUFFIX) ---
-  - "DOMAIN-SUFFIX,066655.xyz,🎯 全球直连"
-  - "DOMAIN-SUFFIX,po0.com,🎯 全球直连"
+  - "DOMAIN-SUFFIX,066655.xyz,DIRECT"
+  - "DOMAIN-SUFFIX,po0.com,DIRECT"
   - "DOMAIN-SUFFIX,yandex.ru,🇺🇲 美国节点"
   - "DOMAIN-SUFFIX,jdbstatic.com,🇺🇲 美国节点"
   
@@ -979,20 +844,20 @@ rules:
 
   
   # --- 大类兜底匹配 ---
-  - "RULE-SET,ChinaMedia,🌏 国内媒体"
-  - "RULE-SET,ProxyMedia,🌍 国外媒体"
-  - "RULE-SET,ProxyGFWlist,🚀 手动切换"
+  - "RULE-SET,ChinaMedia,DIRECT"
+  - "RULE-SET,ProxyMedia,🌐 国外通用"
+  - "RULE-SET,ProxyGFWlist,🌐 国外通用"
 
   # 国内域名 / 国内大规则直连
-  - "GEOSITE,cn,🎯 全球直连"
-  - "RULE-SET,ChinaMax,🎯 全球直连"
+  - "GEOSITE,cn,DIRECT"
+  - "RULE-SET,ChinaMax,DIRECT"
 
   # 已知海外域名走代理
-  - "GEOSITE,geolocation-!cn,🚀 手动切换"
+  - "GEOSITE,geolocation-!cn,🌐 国外通用"
 
   # 国内 IP / ASN 直连
-  - "GEOIP,CN,🎯 全球直连"
-  - "RULE-SET,ASN-CN,🎯 全球直连"
+  - "GEOIP,CN,DIRECT"
+  - "RULE-SET,ASN-CN,DIRECT"
 
   # 无域名纯 IP：进入专用策略组，可选 REJECT-DROP 或固定污染出口
   - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR,0.0.0.0/0,no-resolve)),🕳 纯IP黑洞节点"

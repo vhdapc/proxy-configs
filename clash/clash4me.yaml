@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.08.11-1
-# Date: 修改于 2026/8/11
+# Version: v2026.08.12-1
+# Date: 修改于 2026/8/12
 
 sniffer:
   enable: true
@@ -39,13 +39,15 @@ proxy-groups:
       - 🇭🇰 香港节点
  
   - name: 🌐 国外通用
-    type: select
+    type: fallback
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
     proxies:
       - 🇯🇵 日本节点
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
-      - 🚀 手动切换
-      
+      - ✈️ 机场节点
+
   - name: 🌱 原生节点
     include-all: true
     filter: (?i)^Native-Zouter-(RFC|KFC)$
@@ -69,41 +71,32 @@ proxy-groups:
   - name: 📺 Emby观影
     type: select
     proxies:
+      - 🚀 手动切换
       - ✈️ 机场节点             # 刚才我们过滤出的机场 NF/BGP 组
       - 🇺🇲 美国节点             # 你的美西三网优化线路（自建）
-      - 🇯🇵 日本节点             # 你的 JP 专线（自建）
       - 🇭🇰 香港节点
-      - 🚀 手动切换
-      - DIRECT                 # 直连（如果你在本地做了 CF 优选 IP 劫持，选这个）
-      
+
   - name: 📲 电报消息
     type: select
     proxies:
       - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
       - 🚀 手动切换
-      - ✈️ 机场节点
 
-  - name: 💬 GoogleAI
+  - name: "💬 Google & AI"
     type: select
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     proxies:
-      - 🚀 节点选择    
-      - 🌱 原生节点
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
       - 🚀 手动切换
-      - ✈️ 机场节点
 
   - name: 🛑 广告拦截
     type: select
@@ -117,10 +110,12 @@ proxy-groups:
   - name: 🍎 Apple Proxy
     type: select
     proxies:
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
-      - 🚀 节点选择
       - DIRECT
 
   - name: 🍏 其余 Apple
@@ -132,83 +127,66 @@ proxy-groups:
   - name: 🐦 推特消息
     type: select
     proxies:
-      - 🌱 原生节点
       - 🚀 节点选择
-      - ♻️ 自动选择
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-     # - 🇰🇷 韩国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
-      - ✈️ 机场节点
 
   - name: Ⓜ️ 微软服务
     type: select
     proxies:
       - 🚀 节点选择
-      - DIRECT
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
       - 🚀 手动切换
-      
+      - DIRECT
+
   - name: 💶 贝宝支付
     type: select
     proxies:
-      - 🇺🇲 美国节点
-      - 🌱 原生节点
       - 🚀 节点选择
-      - ♻️ 自动选择
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
+      - 🌐 国外通用
       - 🇯🇵 日本节点
-     # - 🇰🇷 韩国节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
       - DIRECT
-      
+
   - name: 🎮 游戏平台
     type: select
     proxies:
       - 🚀 节点选择
-      - DIRECT
+      - 🌐 国外通用
+      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-     # - 🇰🇷 韩国节点
-      - ✈️ 机场节点
       - 🚀 手动切换
-      
+      - DIRECT
+
   - name: 🐟 漏网之鱼
     type: select
     proxies:
-      - ♻️ 自动选择
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-     # - 🇰🇷 韩国节点
-      - 🚀 手动切换
+      - 🇯🇵 日本节点
       - ✈️ 机场节点
-      
+      - 🚀 手动切换
+
   - name: 🕳 纯IP黑洞节点
     type: select
     proxies:
-      - REJECT-DROP
-      - REJECT
+      - 🇭🇰 香港节点
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
-      - 🇭🇰 香港节点
-      - 🚀 手动切换    
       - ✈️ 机场节点
-      
-    
-  # === 机场节点 (Emby专用) ===
+      - 🚀 手动切换
+      - REJECT-DROP
+      - REJECT
+
   - name: ✈️ 机场节点
     include-all: true
     # 只抓取带有 BGP 或 NF 的机场节点
@@ -717,9 +695,9 @@ rules:
   #- AND,((DOMAIN-SUFFIX,oaiusercontent.com),(NETWORK,UDP)),REJECT
 
   # --- AI系 ---
-  - "RULE-SET,Gemini,💬 GoogleAI"
-  - "RULE-SET,OpenAi,💬 GoogleAI"
-  - "RULE-SET,ai,💬 GoogleAI"
+  - "RULE-SET,Gemini,💬 Google & AI"
+  - "RULE-SET,OpenAi,💬 Google & AI"
+  - "RULE-SET,ai,💬 Google & AI"
   
   
   ##Duolingo
@@ -729,7 +707,7 @@ rules:
   - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
   - "RULE-SET,YouTube,🌐 国外通用"
   - "RULE-SET,GoogleFCM,🚀 节点选择"
-  - "RULE-SET,Google,💬 GoogleAI"
+  - "RULE-SET,Google,💬 Google & AI"
 
   # --- Apple系 ---
   # 需要海外出口的 Apple 服务：APNs / TV / Music / Mail
@@ -844,7 +822,7 @@ rules:
   - "IP-ASN,62014,📲 电报消息,no-resolve"
   
   # Google / YouTube (防止极端情况下的纯IP回源)
-  - "IP-ASN,15169,💬 GoogleAI,no-resolve"
+  - "IP-ASN,15169,💬 Google & AI,no-resolve"
   
   # Cloudflare (很多海外冷门 App 和代理工具的 API 会直连 CF 的 IP)
   - "IP-ASN,13335,🚀 手动切换,no-resolve"

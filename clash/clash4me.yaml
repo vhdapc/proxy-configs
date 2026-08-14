@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.08.12-1
-# Date: 修改于 2026/8/12
+# Version: v2026.08.14-1
+# Date: 修改于 2026/8/14
 
 sniffer:
   enable: true
@@ -684,7 +684,7 @@ rules:
   - DST-PORT,19302,REJECT
   
   #AdGuard
-  - DOMAIN,injections.adguard.org,🚀 节点选择
+  - DOMAIN,injections.adguard.org,🌐 国外通用
   - DOMAIN,local.adguard.org,REJECT
   
   
@@ -701,12 +701,12 @@ rules:
   
   
   ##Duolingo
-  - "RULE-SET,Duolingo,🚀 手动切换"
+  - "RULE-SET,Duolingo,🌐 国外通用"
   
   # --- Google系 ---
   - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
   - "RULE-SET,YouTube,🌐 国外通用"
-  - "RULE-SET,GoogleFCM,🚀 节点选择"
+  - "RULE-SET,GoogleFCM,🌐 国外通用"
   - "RULE-SET,Google,💬 Google & AI"
 
   # --- Apple系 ---
@@ -729,7 +729,7 @@ rules:
   
   
   # --- 微软系 ---
-  - "RULE-SET,GitHub,🚀 节点选择"  
+  - "RULE-SET,GitHub,🌐 国外通用"  
   - "RULE-SET,Bing,Ⓜ️ 微软服务"
   - "RULE-SET,OneDrive,Ⓜ️ 微软服务"
   - "RULE-SET,Microsoft,Ⓜ️ 微软服务"
@@ -810,7 +810,7 @@ rules:
   - "DOMAIN-SUFFIX,jdbstatic.com,🇺🇲 美国节点"
   
   # --- 域名关键字匹配 (DOMAIN-KEYWORD) ---
-  - "DOMAIN-KEYWORD,nodeseek,🚀 手动切换"
+  - "DOMAIN-KEYWORD,nodeseek,🌐 国外通用"
   - "DOMAIN-KEYWORD,javdb,🇺🇲 美国节点"
   
   # >>> 海外大厂纯 IP 保护名单 (防绞杀网误杀) <<<
@@ -825,7 +825,7 @@ rules:
   - "IP-ASN,15169,💬 Google & AI,no-resolve"
   
   # Cloudflare (很多海外冷门 App 和代理工具的 API 会直连 CF 的 IP)
-  - "IP-ASN,13335,🚀 手动切换,no-resolve"
+  - "IP-ASN,13335,🌐 国外通用,no-resolve"
   
   # 微软 / Xbox (如果你有外服游戏联机需求，放行微软云)
   - "IP-ASN,8075,Ⓜ️ 微软服务,no-resolve"

@@ -659,8 +659,8 @@ rules:
   - "RULE-SET,Download,DIRECT"
   
   # >>> 核心修改：放行 Nikki 自身的 DNS 查询请求 (DNS VIP通道) <<<
-  - "IP-CIDR,1.1.1.1/32,🚀 手动切换,no-resolve"
-  - "IP-CIDR,8.8.8.8/32,🚀 手动切换,no-resolve"
+  - "IP-CIDR,1.1.1.1/32,🌐 国外通用,no-resolve"
+  - "IP-CIDR,8.8.8.8/32,🌐 国外通用,no-resolve"
   - "IP-CIDR,223.5.5.5/32,DIRECT,no-resolve"
   - "IP-CIDR,223.6.6.6/32,DIRECT,no-resolve"
   - "IP-CIDR,1.12.12.12/32,DIRECT,no-resolve"

@@ -46,9 +46,10 @@ proxy-groups:
       - 🇯🇵 日本节点
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
-      - ✈️ 机场节点
+      - 🚀 节点选择
 
   - name: 🌱 原生节点
+    hidden: true
     include-all: true
     filter: (?i)^Native-Zouter-(RFC|KFC)$
     type: url-test
@@ -61,18 +62,10 @@ proxy-groups:
     exclude-filter: (?i)应急|10X|10倍率|V3
     type: select
     
-  - name: ♻️ 自动选择
-    type: url-test
-    include-all: true
-    exclude-filter: (?i)应急|10X|10倍率|V3
-    interval: 300
-    tolerance: 50
-    
   - name: 📺 Emby观影
     type: select
     proxies:
       - 🚀 手动切换
-      - ✈️ 机场节点             # 刚才我们过滤出的机场 NF/BGP 组
       - 🇺🇲 美国节点             # 你的美西三网优化线路（自建）
       - 🇭🇰 香港节点
 
@@ -173,7 +166,6 @@ proxy-groups:
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
-      - ✈️ 机场节点
       - 🚀 手动切换
 
   - name: 🕳 纯IP黑洞节点
@@ -182,12 +174,12 @@ proxy-groups:
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
-      - ✈️ 机场节点
       - 🚀 手动切换
       - REJECT-DROP
       - REJECT
 
   - name: ✈️ 机场节点
+    hidden: true
     include-all: true
     # 只抓取带有 BGP 或 NF 的机场节点
     filter: (?i)BGP|NF

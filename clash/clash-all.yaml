@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash-all
-# Version: v2026.08.11-1
-# Date: 修改于 2026/8/11
+# Version: v2026.09.28-1
+# Date: 修改于 2026/9/28
 
 sniffer:
   enable: true
@@ -39,13 +39,14 @@ proxy-groups:
       - 🚀 手动切换
 
   - name: 🌐 国外通用
-    type: select
+    type: fallback
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
     proxies:
-      - 🚀 节点选择
       - 🇯🇵 日本节点
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
-      - 🚀 手动切换
+      - 🚀 节点选择
 
   - name: 🚀 手动切换
     include-all: true
@@ -55,36 +56,38 @@ proxy-groups:
   - name: 📺 Emby观影
     type: select
     proxies:
-      - 🇺🇲 美国节点             # 你的美西三网优化线路（自建）
-      - 🇯🇵 日本节点             # 你的 JP 专线（自建）
-      - 🇭🇰 香港节点
       - 🚀 手动切换
-      - DIRECT                 # 直连（如果你在本地做了 CF 优选 IP 劫持，选这个）
+      - 🇺🇲 美国节点             # 你的美西三网优化线路（自建）
+      - 🇭🇰 香港节点
       
   - name: 📲 电报消息
     type: select
     proxies:
       - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
       - 🚀 手动切换
 
-  - name: 💬 GoogleAI
+  - name: "💬 Google & AI"
     type: select
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     proxies:
-      - 🚀 节点选择    
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-     # - 🇰🇷 韩国节点
+      - 🚀 手动切换
+
+  - name: "🟦 Meta & Muse"
+    type: select
+    proxies:
+      - 🇺🇲 美国节点
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🚀 手动切换
 
   - name: 🛑 广告拦截
@@ -98,10 +101,12 @@ proxy-groups:
   - name: 🍎 Apple Proxy
     type: select
     proxies:
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
-      - 🚀 节点选择
       - DIRECT
 
   - name: 🍏 其余 Apple
@@ -114,34 +119,31 @@ proxy-groups:
     type: select
     proxies:
       - 🚀 节点选择
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-     # - 🇰🇷 韩国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
 
   - name: Ⓜ️ 微软服务
     type: select
     proxies:
       - 🚀 节点选择
-      - DIRECT
+      - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
       - 🚀 手动切换
+      - DIRECT
 
   - name: 💶 贝宝支付
     type: select
     proxies:
-      - 🇺🇲 美国节点
       - 🚀 节点选择
-      - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
+      - 🌐 国外通用
       - 🇯🇵 日本节点
-     # - 🇰🇷 韩国节点
+      - 🇺🇲 美国节点
+      - 🇭🇰 香港节点
       - 🚀 手动切换
       - DIRECT
       
@@ -149,37 +151,33 @@ proxy-groups:
     type: select
     proxies:
       - 🚀 节点选择
-      - DIRECT
+      - 🌐 国外通用
+      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-     # - 🇨🇳 台湾节点
-     # - 🇸🇬 狮城节点
-      - 🇯🇵 日本节点
-     # - 🇰🇷 韩国节点
       - 🚀 手动切换
+      - DIRECT
       
   - name: 🐟 漏网之鱼
     type: select
     proxies:
-      - 🚀 节点选择
-      - DIRECT
       - 🇭🇰 香港节点
-      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
+      - 🇯🇵 日本节点
       - 🚀 手动切换
 
   - name: 🕳 纯IP黑洞节点
     type: select
     proxies:
-      - REJECT-DROP
-      - REJECT
+      - 🇭🇰 香港节点
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
-      - 🇭🇰 香港节点
-      - 🚀 手动切换    
+      - 🚀 手动切换
+      - REJECT-DROP
+      - REJECT
       
     
-  # === 机场节点 (Emby专用) ===
+  # === 机场节点（暂停使用，保留备用）===
   - name: ✈️ 机场节点
     hidden: true
     include-all: true
@@ -196,7 +194,7 @@ proxy-groups:
     include-all: true
     filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
     # 排除所有机场特征：BGP、NF 以及那个特殊的应急节点
-    # exclude-filter: (?i)BGP|NF|应急
+    exclude-filter: (?i)BGP|NF|应急
     type: url-test
     interval: 300
     tolerance: 50
@@ -204,7 +202,7 @@ proxy-groups:
   - name: 🇯🇵 日本节点
     include-all: true
     filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan
-    # exclude-filter: (?i)BGP|NF|应急|Native|Zouter|原生
+    exclude-filter: (?i)BGP|NF|应急|Native|Zouter|原生
     type: url-test
     interval: 300
     tolerance: 50
@@ -212,7 +210,7 @@ proxy-groups:
   - name: 🇺🇲 美国节点
     include-all: true
     filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States
-    # exclude-filter: (?i)BGP|NF|应急
+    exclude-filter: (?i)BGP|NF|应急
     type: url-test
     interval: 300
     tolerance: 50
@@ -366,6 +364,13 @@ rule-providers:
   Twitter:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
     path: ./ruleset/Twitter.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Facebook:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
+    path: ./ruleset/Facebook.yaml
     behavior: classical
     interval: 86400
     format: yaml
@@ -678,7 +683,7 @@ rules:
   - DST-PORT,19302,REJECT
   
   #AdGuard
-  - DOMAIN,injections.adguard.org,🚀 节点选择
+  - DOMAIN,injections.adguard.org,🌐 国外通用
   - DOMAIN,local.adguard.org,REJECT
   
   
@@ -689,19 +694,25 @@ rules:
   #- AND,((DOMAIN-SUFFIX,oaiusercontent.com),(NETWORK,UDP)),REJECT
 
   # --- AI系 ---
-  - "RULE-SET,Gemini,💬 GoogleAI"
-  - "RULE-SET,OpenAi,💬 GoogleAI"
-  - "RULE-SET,ai,💬 GoogleAI"
+  # Meta Muse / Meta AI 与 Facebook、Instagram、Threads、Messenger、WhatsApp
+  - "DOMAIN-SUFFIX,meta.ai,🟦 Meta & Muse"
+  - "RULE-SET,Facebook,🟦 Meta & Muse"
+  # Grok 网页与 xAI 登录/API；X 内置 Grok 仍跟随 Twitter 规则
+  - "DOMAIN-SUFFIX,grok.com,💬 Google & AI"
+  - "DOMAIN-SUFFIX,x.ai,💬 Google & AI"
+  - "RULE-SET,Gemini,💬 Google & AI"
+  - "RULE-SET,OpenAi,💬 Google & AI"
+  - "RULE-SET,ai,💬 Google & AI"
   
   
   ##Duolingo
-  - "RULE-SET,Duolingo,🚀 手动切换"
+  - "RULE-SET,Duolingo,🌐 国外通用"
   
   # --- Google系 ---
   - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
   - "RULE-SET,YouTube,🌐 国外通用"
-  - "RULE-SET,GoogleFCM,🚀 节点选择"
-  - "RULE-SET,Google,💬 GoogleAI"
+  - "RULE-SET,GoogleFCM,🌐 国外通用"
+  - "RULE-SET,Google,💬 Google & AI"
 
   # --- Apple系 ---
   # 需要海外出口的 Apple 服务：APNs / TV / Music / Mail
@@ -723,7 +734,7 @@ rules:
   
   
   # --- 微软系 ---
-  - "RULE-SET,GitHub,🚀 节点选择"  
+  - "RULE-SET,GitHub,🌐 国外通用"
   - "RULE-SET,Bing,Ⓜ️ 微软服务"
   - "RULE-SET,OneDrive,Ⓜ️ 微软服务"
   - "RULE-SET,Microsoft,Ⓜ️ 微软服务"
@@ -804,7 +815,7 @@ rules:
   - "DOMAIN-SUFFIX,jdbstatic.com,🇺🇲 美国节点"
   
   # --- 域名关键字匹配 (DOMAIN-KEYWORD) ---
-  - "DOMAIN-KEYWORD,nodeseek,🚀 手动切换"
+  - "DOMAIN-KEYWORD,nodeseek,🌐 国外通用"
   - "DOMAIN-KEYWORD,javdb,🇺🇲 美国节点"
   
   # >>> 海外大厂纯 IP 保护名单 (防绞杀网误杀) <<<
@@ -816,10 +827,10 @@ rules:
   - "IP-ASN,62014,📲 电报消息,no-resolve"
   
   # Google / YouTube (防止极端情况下的纯IP回源)
-  - "IP-ASN,15169,💬 GoogleAI,no-resolve"
+  - "IP-ASN,15169,💬 Google & AI,no-resolve"
   
   # Cloudflare (很多海外冷门 App 和代理工具的 API 会直连 CF 的 IP)
-  - "IP-ASN,13335,🚀 手动切换,no-resolve"
+  - "IP-ASN,13335,🌐 国外通用,no-resolve"
   
   # 微软 / Xbox (如果你有外服游戏联机需求，放行微软云)
   - "IP-ASN,8075,Ⓜ️ 微软服务,no-resolve"

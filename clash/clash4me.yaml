@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.08.14-1
-# Date: 修改于 2026/8/14
+# Version: v2026.09.28-1
+# Date: 修改于 2026/9/28
 
 sniffer:
   enable: true
@@ -89,6 +89,14 @@ proxy-groups:
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
+      - 🚀 手动切换
+
+  - name: "🟦 Meta & Muse"
+    type: select
+    proxies:
+      - 🇺🇲 美国节点
+      - 🚀 节点选择
+      - 🌐 国外通用
       - 🚀 手动切换
 
   - name: 🛑 广告拦截
@@ -364,6 +372,13 @@ rule-providers:
   Twitter:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
     path: ./ruleset/Twitter.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Facebook:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
+    path: ./ruleset/Facebook.yaml
     behavior: classical
     interval: 86400
     format: yaml
@@ -687,6 +702,12 @@ rules:
   #- AND,((DOMAIN-SUFFIX,oaiusercontent.com),(NETWORK,UDP)),REJECT
 
   # --- AI系 ---
+  # Meta Muse / Meta AI 与 Facebook、Instagram、Threads、Messenger、WhatsApp
+  - "DOMAIN-SUFFIX,meta.ai,🟦 Meta & Muse"
+  - "RULE-SET,Facebook,🟦 Meta & Muse"
+  # Grok 网页与 xAI 登录/API；X 内置 Grok 仍跟随 Twitter 规则
+  - "DOMAIN-SUFFIX,grok.com,💬 Google & AI"
+  - "DOMAIN-SUFFIX,x.ai,💬 Google & AI"
   - "RULE-SET,Gemini,💬 Google & AI"
   - "RULE-SET,OpenAi,💬 Google & AI"
   - "RULE-SET,ai,💬 Google & AI"

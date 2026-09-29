@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.09.28-1
-# Date: 修改于 2026/9/28
+# Version: v2026.09.29-1
+# Date: 修改于 2026/9/29
 
 sniffer:
   enable: true
@@ -718,7 +718,7 @@ rules:
   
   # --- Google系 ---
   - "RULE-SET,GoogleVoice,🇺🇲 美国节点"
-  - "RULE-SET,YouTube,🌐 国外通用"
+  - "RULE-SET,YouTube,💬 Google & AI"
   - "RULE-SET,GoogleFCM,🌐 国外通用"
   - "RULE-SET,Google,💬 Google & AI"
 
@@ -736,9 +736,9 @@ rules:
   
   # --- 支付系 ---
   - "RULE-SET,PayPal,💶 贝宝支付"
-  - "RULE-SET,Binance,🇯🇵 日本节点"
-  - "RULE-SET,OKX,🇯🇵 日本节点"
-  - "RULE-SET,Cryptocurrency,🇯🇵 日本节点"
+  - "RULE-SET,Binance,🚀 节点选择"
+  - "RULE-SET,OKX,🚀 节点选择"
+  - "RULE-SET,Cryptocurrency,🚀 节点选择"
   
   
   # --- 微软系 ---

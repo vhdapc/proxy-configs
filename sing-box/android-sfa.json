@@ -1,0 +1,922 @@
+{
+  "$schema": "https://sing-box.sagernet.org/schema.json",
+  "log": {
+    "disabled": true,
+    "level": "warn",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "local",
+        "type": "local",
+        "prefer_go": true
+      },
+      {
+        "tag": "dns-cn",
+        "type": "https",
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "dns-proxy",
+        "type": "https",
+        "server": "8.8.8.8",
+        "detour": "🚀 节点选择"
+      },
+      {
+        "tag": "fakeip",
+        "type": "fakeip",
+        "inet4_range": "198.19.0.0/16"
+      },
+      {
+        "tag": "hosts",
+        "type": "hosts",
+        "predefined": {
+          "doh.pub": [
+            "1.12.12.21",
+            "120.53.53.53"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "clash_mode": "Direct",
+        "server": "dns-cn"
+      },
+      {
+        "rule_set": [
+          "geosite-cn",
+          "geosite-private",
+          "geosite-apple@cn",
+          "geosite-microsoft@cn"
+        ],
+        "server": "dns-cn"
+      },
+      {
+        "rule_set": "geosite-geolocation-!cn",
+        "server": "dns-proxy"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "fakeip",
+        "rewrite_ttl": 1
+      }
+    ],
+    "final": "dns-proxy",
+    "strategy": "ipv4_only",
+    "cache_capacity": 8192,
+    "optimistic": {
+      "enabled": true
+    },
+    "reverse_mapping": true
+  },
+  "outbounds": [
+    {
+      "tag": "🚀 节点选择",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "自动选择",
+        "手动选择",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇺🇸 美国节点",
+        "原生节点",
+        "直连"
+      ],
+      "default": "🌐 国外通用"
+    },
+    {
+      "tag": "🌐 国外通用",
+      "type": "selector",
+      "outbounds": [
+        "自动选择",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇺🇸 美国节点",
+        "手动选择"
+      ],
+      "default": "自动选择"
+    },
+    {
+      "tag": "手动选择",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "自动选择",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "🇭🇰 香港节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "🇯🇵 日本节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "🇺🇸 美国节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "原生节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "✈️ 机场节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
+    },
+    {
+      "tag": "💬 Google & AI",
+      "type": "selector",
+      "outbounds": [
+        "🇺🇸 美国节点",
+        "🌐 国外通用",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "🟦 Meta & Muse",
+      "type": "selector",
+      "outbounds": [
+        "🇺🇸 美国节点",
+        "🌐 国外通用",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "📺 YouTube",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "📲 电报消息",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "🐦 推特消息",
+      "type": "selector",
+      "outbounds": [
+        "🚀 节点选择",
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "🍎 Apple Proxy",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择",
+        "直连"
+      ]
+    },
+    {
+      "tag": "🍏 其余 Apple",
+      "type": "selector",
+      "outbounds": [
+        "直连",
+        "🍎 Apple Proxy"
+      ]
+    },
+    {
+      "tag": "Ⓜ️ 微软服务",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择",
+        "直连"
+      ]
+    },
+    {
+      "tag": "💶 贝宝支付",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择",
+        "直连"
+      ]
+    },
+    {
+      "tag": "🎮 游戏平台",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择",
+        "直连"
+      ]
+    },
+    {
+      "tag": "🌏 国内媒体",
+      "type": "selector",
+      "outbounds": [
+        "直连",
+        "🌐 国外通用"
+      ]
+    },
+    {
+      "tag": "🌍 国际媒体",
+      "type": "selector",
+      "outbounds": [
+        "🌐 国外通用",
+        "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
+        "🇺🇸 美国节点",
+        "手动选择"
+      ]
+    },
+    {
+      "tag": "🕳 纯IP黑洞节点",
+      "type": "selector",
+      "outbounds": [
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇺🇸 美国节点",
+        "手动选择",
+        "block"
+      ]
+    },
+    {
+      "tag": "📺 Emby观影",
+      "type": "selector",
+      "outbounds": [
+        "手动选择",
+        "🇺🇸 美国节点",
+        "🇭🇰 香港节点",
+        "🌐 国外通用"
+      ]
+    },
+    {
+      "tag": "🛑 广告拦截",
+      "type": "selector",
+      "outbounds": [
+        "block",
+        "直连"
+      ]
+    },
+    {
+      "tag": "🐟 漏网之鱼",
+      "type": "selector",
+      "outbounds": [
+        "🚀 节点选择",
+        "🌐 国外通用",
+        "手动选择",
+        "直连"
+      ]
+    },
+    {
+      "tag": "直连",
+      "type": "direct",
+      "domain_resolver": "dns-cn"
+    },
+    {
+      "tag": "block",
+      "type": "block"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+      {
+        "action": "sniff",
+        "sniffer": [
+          "http",
+          "tls",
+          "quic",
+          "stun"
+        ]
+      },
+      {
+        "protocol": "bittorrent",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "ip_cidr": [
+          "1.1.1.1/32",
+          "8.8.8.8/32"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "ip_cidr": [
+          "223.5.5.5/32",
+          "223.6.6.6/32",
+          "1.12.12.12/32"
+        ],
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "domain_suffix": [
+          "wechat.com",
+          "weixin.qq.com",
+          "wechatpay.com",
+          "qpic.cn",
+          "qlogo.cn"
+        ],
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "protocol": "stun"
+          },
+          {
+            "port": [
+              3478,
+              19302
+            ]
+          }
+        ],
+        "action": "reject",
+        "no_drop": true
+      },
+      {
+        "network": "icmp",
+        "action": "resolve"
+      },
+      {
+        "network": "icmp",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "domain_suffix": [
+          "majsoul-us-client.us-east-1.log.aliyuncs.com",
+          "yostar-oversea-client-logging.ap-southeast-1.log.aliyuncs.com",
+          "majsoul-hk-client.cn-hongkong.log.aliyuncs.com",
+          "adjust.com"
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_keyword": [
+          "client-logging"
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_suffix": [
+          "meta.ai"
+        ],
+        "action": "route",
+        "outbound": "🟦 Meta & Muse"
+      },
+      {
+        "domain_suffix": [
+          "grok.com",
+          "x.ai"
+        ],
+        "action": "route",
+        "outbound": "💬 Google & AI"
+      },
+      {
+        "domain_suffix": [
+          "x.com",
+          "twitter.com",
+          "t.co",
+          "twimg.com",
+          "tweetdeck.com",
+          "periscope.tv"
+        ],
+        "action": "route",
+        "outbound": "🐦 推特消息"
+      },
+      {
+        "domain_suffix": [
+          "injections.adguard.org"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "domain_suffix": [
+          "local.adguard.org"
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_suffix": [
+          "majsoul-us-client.us-east-1.log.aliyuncs.com",
+          "yostar-oversea-client-logging.ap-southeast-1.log.aliyuncs.com",
+          "majsoul-hk-client.cn-hongkong.log.aliyuncs.com",
+          "adjust.com"
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_keyword": [
+          "client-logging"
+        ],
+        "action": "reject"
+      },
+      {
+        "domain_suffix": [
+          "yostarplat.com",
+          "yo-star.com",
+          "mahjongsoul.com",
+          "maj-soul.com",
+          "catmjstudio.com"
+        ],
+        "action": "route",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "domain_keyword": [
+          "mahjongsoul",
+          "majsoul"
+        ],
+        "action": "route",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "domain_suffix": [
+          "mobaiemby.site"
+        ],
+        "action": "route",
+        "outbound": "📺 Emby观影"
+      },
+      {
+        "domain_suffix": [
+          "066655.xyz",
+          "po0.io",
+          "po0.com"
+        ],
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "domain_suffix": [
+          "yandex.ru",
+          "jdbstatic.com"
+        ],
+        "action": "route",
+        "outbound": "🇺🇸 美国节点"
+      },
+      {
+        "domain_keyword": [
+          "nodeseek"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "domain_keyword": [
+          "javdb"
+        ],
+        "action": "route",
+        "outbound": "🇺🇸 美国节点"
+      },
+      {
+        "domain_suffix": [
+          "push.apple.com"
+        ],
+        "action": "route",
+        "outbound": "🍎 Apple Proxy"
+      },
+      {
+        "domain_suffix": [
+          "tv.apple.com",
+          "itunes.apple.com",
+          "music.apple.com",
+          "apps.apple.com",
+          "mail.me.com"
+        ],
+        "action": "route",
+        "outbound": "🍎 Apple Proxy"
+      },
+      {
+        "domain_suffix": [
+          "mtalk.google.com",
+          "android.clients.google.com",
+          "firebaseinstallations.googleapis.com"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "domain_suffix": [
+          "voice.google.com"
+        ],
+        "action": "route",
+        "outbound": "🇺🇸 美国节点"
+      },
+      {
+        "domain_suffix": [
+          "googleapis.com",
+          "googleusercontent.com",
+          "gstatic.com",
+          "google.com",
+          "googlevideo.com",
+          "ggpht.com",
+          "youtube.com",
+          "ytimg.com"
+        ],
+        "action": "route",
+        "outbound": "💬 Google & AI"
+      },
+      {
+        "domain_suffix": [
+          "facebook.com",
+          "facebook.net",
+          "instagram.com",
+          "cdninstagram.com",
+          "threads.net",
+          "whatsapp.com",
+          "whatsapp.net",
+          "meta.com"
+        ],
+        "action": "route",
+        "outbound": "🟦 Meta & Muse"
+      },
+      {
+        "domain_suffix": [
+          "telegram.org",
+          "t.me",
+          "telegram.me",
+          "telegra.ph"
+        ],
+        "action": "route",
+        "outbound": "📲 电报消息"
+      },
+      {
+        "domain_suffix": [
+          "paypal.com",
+          "paypalobjects.com"
+        ],
+        "action": "route",
+        "outbound": "💶 贝宝支付"
+      },
+      {
+        "domain_suffix": [
+          "binance.com",
+          "binance.org",
+          "okx.com",
+          "okx.com"
+        ],
+        "action": "route",
+        "outbound": "💶 贝宝支付"
+      },
+      {
+        "domain_suffix": [
+          "github.com",
+          "githubusercontent.com",
+          "githubassets.com"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "domain_suffix": [
+          "onedrive.live.com",
+          "1drv.com",
+          "sharepoint.com",
+          "office.com",
+          "office365.com",
+          "microsoft.com",
+          "live.com"
+        ],
+        "action": "route",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "domain_suffix": [
+          "netflix.com",
+          "nflxvideo.net",
+          "nflximg.net",
+          "nflxso.net",
+          "nflxext.com"
+        ],
+        "action": "route",
+        "outbound": "🌍 国际媒体"
+      },
+      {
+        "domain_suffix": [
+          "bahamut.com.tw",
+          "gamer.com.tw"
+        ],
+        "action": "route",
+        "outbound": "🌍 国际媒体"
+      },
+      {
+        "domain_suffix": [
+          "bilibili.com",
+          "bilibili.tv",
+          "bilivideo.com",
+          "hdslb.com",
+          "music.163.com",
+          "163.com"
+        ],
+        "action": "route",
+        "outbound": "🌏 国内媒体"
+      },
+      {
+        "domain_suffix": [
+          "steamchina.com",
+          "steamcontent.com.cn"
+        ],
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "domain_suffix": [
+          "steamcommunity.com",
+          "steampowered.com",
+          "steamstatic.com",
+          "epicgames.com",
+          "nintendo.com",
+          "playstation.com",
+          "sony.com"
+        ],
+        "action": "route",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "domain_suffix": [
+          "xiaomi.com",
+          "mi.com",
+          "jd.com",
+          "360buy.com",
+          "taobao.com",
+          "tmall.com",
+          "alibaba.com",
+          "meituan.com"
+        ],
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "rule_set": "geosite-facebook",
+        "action": "route",
+        "outbound": "🟦 Meta & Muse"
+      },
+      {
+        "rule_set": "geosite-category-ai-!cn",
+        "action": "route",
+        "outbound": "💬 Google & AI"
+      },
+      {
+        "rule_set": "geosite-youtube",
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "rule_set": "geosite-google",
+        "action": "route",
+        "outbound": "💬 Google & AI"
+      },
+      {
+        "rule_set": "geosite-github",
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "rule_set": "geosite-telegram",
+        "action": "route",
+        "outbound": "📲 电报消息"
+      },
+      {
+        "rule_set": "geosite-apple@cn",
+        "action": "route",
+        "outbound": "🍏 其余 Apple"
+      },
+      {
+        "rule_set": "geosite-apple",
+        "action": "route",
+        "outbound": "🍏 其余 Apple"
+      },
+      {
+        "rule_set": "geosite-microsoft@cn",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "rule_set": "geosite-onedrive",
+        "action": "route",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "rule_set": "geosite-microsoft",
+        "action": "route",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "rule_set": [
+          "geosite-paypal",
+          "geosite-binance",
+          "geosite-okx",
+          "geosite-category-cryptocurrency"
+        ],
+        "action": "route",
+        "outbound": "💶 贝宝支付"
+      },
+      {
+        "rule_set": "geosite-steam@cn",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "rule_set": [
+          "geosite-steam",
+          "geosite-epicgames",
+          "geosite-nintendo",
+          "geosite-playstation"
+        ],
+        "action": "route",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "rule_set": "geosite-netflix",
+        "action": "route",
+        "outbound": "🌍 国际媒体"
+      },
+      {
+        "rule_set": "geosite-cn",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "rule_set": "geosite-geolocation-!cn",
+        "action": "route",
+        "outbound": "🌐 国外通用"
+      },
+      {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "rule_set": "geoip-cn",
+        "action": "route",
+        "outbound": "直连"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "domain_regex": [
+              "^.+$"
+            ],
+            "invert": true
+          },
+          {
+            "ip_cidr": [
+              "0.0.0.0/0",
+              "::/0"
+            ]
+          }
+        ],
+        "action": "route",
+        "outbound": "🕳 纯IP黑洞节点"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": [
+          "geosite-geolocation-!cn",
+          "geosite-cn",
+          "geosite-private",
+          "geosite-category-ai-!cn",
+          "geosite-youtube",
+          "geosite-google",
+          "geosite-facebook",
+          "geosite-github",
+          "geosite-onedrive",
+          "geosite-microsoft",
+          "geosite-microsoft@cn",
+          "geosite-apple",
+          "geosite-apple@cn",
+          "geosite-telegram",
+          "geosite-paypal",
+          "geosite-binance",
+          "geosite-okx",
+          "geosite-category-cryptocurrency",
+          "geosite-steam@cn",
+          "geosite-steam",
+          "geosite-epicgames",
+          "geosite-nintendo",
+          "geosite-playstation",
+          "geosite-netflix"
+        ],
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/{tag}.srs",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+        "update_interval": "1d"
+      }
+    ],
+    "final": "🐟 漏网之鱼",
+    "default_domain_resolver": {
+      "server": "dns-cn"
+    }
+  },
+  "inbounds": [
+    {
+      "tag": "tun-in",
+      "type": "tun",
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "auto_route": true,
+      "strict_route": true,
+      "stack": "mixed",
+      "platform": {
+        "http_proxy": {
+          "enabled": false
+        }
+      }
+    }
+  ],
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "store_dns": true
+    }
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "time.apple.com"
+  }
+}

@@ -5,6 +5,9 @@
     "level": "warn",
     "timestamp": true
   },
+  "http_clients": [
+    { "tag": "直连下载", "detour": "直连" }
+  ],
   "dns": {
     "servers": [
       { "tag": "local", "type": "local", "prefer_go": true },
@@ -55,6 +58,7 @@
     { "tag": "block", "type": "block" }
   ],
   "route": {
+    "default_http_client": "直连下载",
     "rules": [
       { "inbound": "dns-in", "action": "hijack-dns" },
       { "action": "sniff", "sniffer": ["http", "tls", "quic", "stun"] },
@@ -121,8 +125,8 @@
       { "type": "logical", "mode": "and", "rules": [{ "domain_regex": ["^.+$"], "invert": true }, { "ip_cidr": ["0.0.0.0/0", "::/0"] }], "action": "route", "outbound": "🕳 纯IP黑洞节点" }
     ],
     "rule_set": [
-      { "tag": ["geosite-geolocation-!cn", "geosite-cn", "geosite-private", "geosite-category-ai-!cn", "geosite-youtube", "geosite-google", "geosite-facebook", "geosite-github", "geosite-onedrive", "geosite-microsoft", "geosite-microsoft@cn", "geosite-apple", "geosite-apple@cn", "geosite-telegram", "geosite-paypal", "geosite-binance", "geosite-okx", "geosite-category-cryptocurrency", "geosite-steam@cn", "geosite-steam", "geosite-epicgames", "geosite-nintendo", "geosite-playstation", "geosite-netflix"], "type": "remote", "format": "binary", "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/{tag}.srs", "update_interval": "1d" },
-      { "tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs", "update_interval": "1d" }
+      { "tag": ["geosite-geolocation-!cn", "geosite-cn", "geosite-private", "geosite-category-ai-!cn", "geosite-youtube", "geosite-google", "geosite-facebook", "geosite-github", "geosite-onedrive", "geosite-microsoft", "geosite-microsoft@cn", "geosite-apple", "geosite-apple@cn", "geosite-telegram", "geosite-paypal", "geosite-binance", "geosite-okx", "geosite-category-cryptocurrency", "geosite-steam@cn", "geosite-steam", "geosite-epicgames", "geosite-nintendo", "geosite-playstation", "geosite-netflix"], "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/{tag}.srs", "update_interval": "1d" },
+      { "tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs", "update_interval": "1d" }
     ],
     "final": "🐟 漏网之鱼",
     "auto_detect_interface": true,

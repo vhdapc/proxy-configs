@@ -50,7 +50,9 @@ for (const outbound of config.outbounds) {
   for (const [outboundRegex, tagRegex] of rules) {
     if (!outboundRegex.test(outbound.tag)) continue;
     if (!Array.isArray(outbound.outbounds)) outbound.outbounds = [];
-    outbound.outbounds.push(...proxyTags.filter(tag => tagRegex.test(tag)));
+    const matches = proxyTags.filter(tag => tagRegex.test(tag));
+    if (outbound.tag === "🚀 节点选择") outbound.outbounds.unshift(...matches);
+    else outbound.outbounds.push(...matches);
   }
   if (Array.isArray(outbound.outbounds)) outbound.outbounds = [...new Set(outbound.outbounds)];
 }
@@ -63,6 +65,31 @@ if (emptyMatchedGroups.length > 0) {
   config.outbounds.push({ tag: "COMPATIBLE", type: "direct" });
   for (const outbound of emptyMatchedGroups) outbound.outbounds.push("COMPATIBLE");
 }
+
+
+// Optional private Nikki mixin routes. Pass as 🕳-separated Clash rule lines in a
+// private Sub-Store parameter; private IPs/domains never belong in this public template.
+// IP-CIDR's Clash no-resolve flag has no sing-box equivalent and is omitted.
+const localRules = String(args.localRules || "").split("🕳").map(item => item.trim()).filter(Boolean);
+const routeRuleByType = {
+  "DOMAIN": "domain",
+  "DOMAIN-SUFFIX": "domain_suffix",
+  "DOMAIN-KEYWORD": "domain_keyword",
+  "IP-CIDR": "ip_cidr",
+  "IP-CIDR6": "ip_cidr"
+};
+const privateRules = localRules.map(line => {
+  const [kind, value, target] = line.split(",").map(part => part.trim());
+  const field = routeRuleByType[kind];
+  if (!field || !value || !target) throw new Error("Unsupported local rule in localRules parameter");
+  const outbound = target === "DIRECT" ? "直连" : target;
+  return { [field]: [value], action: "route", outbound };
+});
+const availableTags = new Set(config.outbounds.map(outbound => outbound.tag).concat(proxyTags));
+for (const rule of privateRules) {
+  if (!availableTags.has(rule.outbound)) throw new Error("Unknown outbound in localRules parameter");
+}
+config.route.rules.splice(2, 0, ...privateRules);
 
 config.outbounds.push(...(artifact.outbounds || []));
 if (!Array.isArray(config.endpoints)) config.endpoints = [];

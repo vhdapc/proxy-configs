@@ -84,14 +84,11 @@
       "tag": "🚀 节点选择",
       "type": "selector",
       "outbounds": [
-        "🌐 国外通用",
-        "自动选择",
-        "手动选择",
-        "🇭🇰 香港节点",
         "🇯🇵 日本节点",
         "🇺🇸 美国节点",
-        "原生节点",
-        "直连"
+        "🇭🇰 香港节点",
+        "🌐 国外通用",
+        "手动选择"
       ],
       "default": "🌐 国外通用"
     },
@@ -99,66 +96,17 @@
       "tag": "🌐 国外通用",
       "type": "selector",
       "outbounds": [
-        "自动选择",
-        "🇭🇰 香港节点",
         "🇯🇵 日本节点",
+        "🇭🇰 香港节点",
         "🇺🇸 美国节点",
         "手动选择"
       ],
-      "default": "自动选择"
+      "default": "🇯🇵 日本节点"
     },
     {
       "tag": "手动选择",
       "type": "selector",
       "outbounds": []
-    },
-    {
-      "tag": "自动选择",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
-    },
-    {
-      "tag": "🇭🇰 香港节点",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
-    },
-    {
-      "tag": "🇯🇵 日本节点",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
-    },
-    {
-      "tag": "🇺🇸 美国节点",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
-    },
-    {
-      "tag": "原生节点",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
-    },
-    {
-      "tag": "✈️ 机场节点",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "10m",
-      "tolerance": 80
     },
     {
       "tag": "💬 Google & AI",
@@ -187,6 +135,16 @@
         "🇭🇰 香港节点",
         "🇺🇸 美国节点",
         "手动选择"
+      ]
+    },
+    {
+      "tag": "📺 Emby观影",
+      "type": "selector",
+      "outbounds": [
+        "手动选择",
+        "🇺🇸 美国节点",
+        "🇭🇰 香港节点",
+        "🌐 国外通用"
       ]
     },
     {
@@ -269,22 +227,13 @@
       ]
     },
     {
-      "tag": "🌏 国内媒体",
+      "tag": "🐟 漏网之鱼",
       "type": "selector",
       "outbounds": [
-        "直连",
-        "🌐 国外通用"
-      ]
-    },
-    {
-      "tag": "🌍 国际媒体",
-      "type": "selector",
-      "outbounds": [
+        "🚀 节点选择",
         "🌐 国外通用",
-        "🇯🇵 日本节点",
-        "🇭🇰 香港节点",
-        "🇺🇸 美国节点",
-        "手动选择"
+        "手动选择",
+        "直连"
       ]
     },
     {
@@ -299,32 +248,28 @@
       ]
     },
     {
-      "tag": "📺 Emby观影",
-      "type": "selector",
-      "outbounds": [
-        "手动选择",
-        "🇺🇸 美国节点",
-        "🇭🇰 香港节点",
-        "🌐 国外通用"
-      ]
+      "tag": "🇯🇵 日本节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
     },
     {
-      "tag": "🛑 广告拦截",
-      "type": "selector",
-      "outbounds": [
-        "block",
-        "直连"
-      ]
+      "tag": "🇭🇰 香港节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
     },
     {
-      "tag": "🐟 漏网之鱼",
-      "type": "selector",
-      "outbounds": [
-        "🚀 节点选择",
-        "🌐 国外通用",
-        "手动选择",
-        "直连"
-      ]
+      "tag": "🇺🇸 美国节点",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 80
     },
     {
       "tag": "直连",
@@ -463,19 +408,6 @@
       },
       {
         "domain_suffix": [
-          "injections.adguard.org"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外通用"
-      },
-      {
-        "domain_suffix": [
-          "local.adguard.org"
-        ],
-        "action": "reject"
-      },
-      {
-        "domain_suffix": [
           "majsoul-us-client.us-east-1.log.aliyuncs.com",
           "yostar-oversea-client-logging.ap-southeast-1.log.aliyuncs.com",
           "majsoul-hk-client.cn-hongkong.log.aliyuncs.com",
@@ -586,13 +518,21 @@
           "googleusercontent.com",
           "gstatic.com",
           "google.com",
-          "googlevideo.com",
-          "ggpht.com",
-          "youtube.com",
-          "ytimg.com"
+          "ggpht.com"
         ],
         "action": "route",
         "outbound": "💬 Google & AI"
+      },
+      {
+        "domain_suffix": [
+          "googlevideo.com",
+          "youtube.com",
+          "ytimg.com",
+          "youtu.be",
+          "youtube-nocookie.com"
+        ],
+        "action": "route",
+        "outbound": "📺 YouTube"
       },
       {
         "domain_suffix": [
@@ -667,7 +607,7 @@
           "nflxext.com"
         ],
         "action": "route",
-        "outbound": "🌍 国际媒体"
+        "outbound": "🌐 国外通用"
       },
       {
         "domain_suffix": [
@@ -675,7 +615,7 @@
           "gamer.com.tw"
         ],
         "action": "route",
-        "outbound": "🌍 国际媒体"
+        "outbound": "🌐 国外通用"
       },
       {
         "domain_suffix": [
@@ -687,7 +627,7 @@
           "163.com"
         ],
         "action": "route",
-        "outbound": "🌏 国内媒体"
+        "outbound": "直连"
       },
       {
         "domain_suffix": [
@@ -737,7 +677,7 @@
       {
         "rule_set": "geosite-youtube",
         "action": "route",
-        "outbound": "🌐 国外通用"
+        "outbound": "📺 YouTube"
       },
       {
         "rule_set": "geosite-google",
@@ -807,7 +747,7 @@
       {
         "rule_set": "geosite-netflix",
         "action": "route",
-        "outbound": "🌍 国际媒体"
+        "outbound": "🌐 国外通用"
       },
       {
         "rule_set": "geosite-cn",

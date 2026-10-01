@@ -25,8 +25,8 @@ const proxyTags = proxies.map(proxy => proxy.tag).filter(tag => typeof tag === "
 if (proxyTags.length === 0) throw new Error(`No sing-box nodes exported from ${sourceType} "${args.name}"`);
 
 // Optional private correction supplied by the Sub-Store file operation URL.
-// Format: server🏷server_name🕳server2🏷server_name2
-// Keep real node hostnames in Sub-Store parameters instead of the public template.
+// Format: node_tag🏷server_name🕳node_tag2🏷server_name2
+// Keep real node tags and hostnames in Sub-Store parameters instead of the public template.
 const tlsServerNameMap = new Map(String(args.tlsServerNameMap || "")
   .split("🕳")
   .map(item => item.trim())
@@ -35,7 +35,7 @@ const tlsServerNameMap = new Map(String(args.tlsServerNameMap || "")
   .filter(parts => parts.length === 2 && parts.every(Boolean)));
 
 for (const proxy of proxies) {
-  const serverName = tlsServerNameMap.get(proxy.server);
+  const serverName = tlsServerNameMap.get(proxy.tag);
   if (serverName && proxy.tls && typeof proxy.tls === "object") proxy.tls.server_name = serverName;
 }
 

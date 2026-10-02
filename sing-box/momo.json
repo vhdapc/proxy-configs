@@ -897,7 +897,8 @@
     },
     "clash_api": {
       "external_controller": "192.168.6.1:9095",
-      "default_mode": "Rule"
+      "default_mode": "Rule",
+      "external_ui": "ui"
     }
   },
   "ntp": {

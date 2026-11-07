@@ -72,12 +72,10 @@ proxy-groups:
   - name: 📲 电报消息
     type: select
     proxies:
-      - 🚀 节点选择
       - 🌐 国外通用
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-      - 🚀 手动切换
 
   - name: "💬 Google & AI"
     type: select
@@ -116,7 +114,6 @@ proxy-groups:
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - 🇭🇰 香港节点
-      - 🚀 手动切换
       - DIRECT
 
   - name: 🍏 其余 Apple
@@ -128,44 +125,38 @@ proxy-groups:
   - name: 🐦 推特消息
     type: select
     proxies:
-      - 🚀 节点选择
       - 🌐 国外通用
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-      - 🚀 手动切换
 
   - name: Ⓜ️ 微软服务
     type: select
     proxies:
-      - 🚀 节点选择
       - 🌐 国外通用
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-      - 🚀 手动切换
       - DIRECT
 
   - name: 💶 贝宝支付
     type: select
     proxies:
-      - 🚀 节点选择
-      - 🌐 国外通用
-      - 🇯🇵 日本节点
       - 🇺🇲 美国节点
+      - 🇯🇵 日本节点
       - 🇭🇰 香港节点
-      - 🚀 手动切换
       - DIRECT
 
   - name: 🎮 游戏平台
     type: select
     proxies:
-      - 🚀 节点选择
       - 🌐 国外通用
+      - 🚀 节点选择
+      - 🇭🇰 香港节点
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
-      - 🚀 手动切换
       - DIRECT
 
   - name: 🐟 漏网之鱼
@@ -175,16 +166,6 @@ proxy-groups:
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
       - 🚀 手动切换
-
-  - name: 🕳 纯IP黑洞节点
-    type: select
-    proxies:
-      - 🇭🇰 香港节点
-      - 🇺🇲 美国节点
-      - 🇯🇵 日本节点
-      - 🚀 手动切换
-      - REJECT-DROP
-      - REJECT
 
   - name: ✈️ 机场节点
     hidden: true
@@ -862,8 +843,8 @@ rules:
   - "RULE-SET,ASN-CN,DIRECT"
 
   # 无域名纯 IP：进入专用策略组，可选 REJECT-DROP 或固定污染出口
-  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR,0.0.0.0/0,no-resolve)),🕳 纯IP黑洞节点"
-  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR6,::/0,no-resolve)),🕳 纯IP黑洞节点"
+  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR,0.0.0.0/0,no-resolve)),🐟 漏网之鱼"
+  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR6,::/0,no-resolve)),🐟 漏网之鱼"
 
   # 剩余流量
   - "MATCH,🐟 漏网之鱼"

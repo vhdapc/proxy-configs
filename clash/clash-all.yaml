@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash-all
-# Version: v2026.09.28-1
-# Date: 修改于 2026/9/28
+# Version: v2026.11.23-1
+# Date: 修改于 2026/11/23
 
 sniffer:
   enable: true
@@ -88,14 +88,6 @@ proxy-groups:
       - 🌐 国外通用
       - 🚀 手动切换
 
-  - name: 🛑 广告拦截
-    type: select
-    proxies:
-      - PASS
-      - REJECT-DROP
-      - REJECT        # 选这个：开启广告拦截（直接丢弃数据包）
-      - DIRECT        # 选这个：关闭广告拦截（让广告数据包直连通过）
-      
   - name: 🍎 Apple Proxy
     type: select
     proxies:
@@ -156,17 +148,6 @@ proxy-groups:
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
       - 🚀 手动切换
-
-  - name: ✈️ 机场节点
-    hidden: true
-    include-all: true
-    # 只抓取带有 BGP 或 NF 的机场节点
-    filter: (?i)BGP|NF
-    # 极其重要：务必把 10倍率 的应急节点排除掉，防止看视频流量暴走
-    exclude-filter: 应急|10X|10倍率|V3
-    type: url-test
-    interval: 300
-    tolerance: 50
 
   # === 自建区域组 ===
   - name: 🇭🇰 香港节点
@@ -572,31 +553,6 @@ rule-providers:
     format: yaml
     type: http
     
-  Advertising:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising_Classical.yaml"
-    path: ./ruleset/Advertising.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
-    type: http  
-    
-  Privacy:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy_Classical.yaml"
-    path: ./ruleset/Privacy.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
-    type: http  
-    
-  Hijacking:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Hijacking/Hijacking.yaml"
-    path: ./ruleset/Hijacking.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
-    type: http  
-
-
   meituan:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/MeiTuan/MeiTuan.yaml"
     path: ./ruleset/meituan.yaml
@@ -622,14 +578,6 @@ rule-providers:
     format: yaml
     type: http
     
-  Tencent:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Tencent/Tencent.yaml"
-    path: ./ruleset/Tencent.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
-    type: http  
-
 rules:
   #正常规则
   - "RULE-SET,LocalAreaNetwork,DIRECT"
@@ -642,19 +590,17 @@ rules:
   - "IP-CIDR,223.5.5.5/32,DIRECT,no-resolve"
   - "IP-CIDR,223.6.6.6/32,DIRECT,no-resolve"
   - "IP-CIDR,1.12.12.12/32,DIRECT,no-resolve"
+  - "IP-CIDR,119.29.29.29/32,DIRECT,no-resolve"
+  - "IP-CIDR,120.53.53.53/32,DIRECT,no-resolve"
   
   # 优先放行主机 IP：PS5 和 Xbox 的所有流量（包含 STUN），直连或走特定游戏节点
   - 'SRC-IP-CIDR,192.168.6.64/27,🎮 游戏平台'
   
   # 微信优先直连，避免被 STUN/UDP 规则误伤
   - "RULE-SET,WeChat,DIRECT"
-  # 可选：如果微信仍然卡，再打开 Tencent
-  # - "RULE-SET,Tencent,DIRECT"
   
-  #禁止QUIC，放在首位确保优先级最高，不经过任何分流直接拒绝，迫使流量瞬间回退到 TCP
-  - AND,((OR,((DST-PORT,443),(DST-PORT,8443))),(NETWORK,UDP)),REJECT
-  # 禁止海外 QUIC：国内 UDP/443 保留，海外 UDP/443/8443 拒绝，迫使海外流量回落 TCP
-  #- "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOIP,CN)))),REJECT"  
+  # 仅屏蔽海外 QUIC，保留国内 QUIC（利用 GEOSITE,cn 与 GEOIP,CN,no-resolve 避免多余 DNS 解析）
+  - "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOSITE,cn))),(NOT,((GEOIP,CN,no-resolve)))),REJECT"
   
   #webrtc，防止泄露
   - DOMAIN-KEYWORD,stun,REJECT
@@ -779,11 +725,6 @@ rules:
   - "RULE-SET,Jingdong,DIRECT"
   - "RULE-SET,meituan,DIRECT"
   
-  # 👇 将去广告规则指向面板策略组 👇
-  - "RULE-SET,Advertising,🛑 广告拦截"
-  ## 下面的一般不开启，有问题（误杀）
-  #- "RULE-SET,Privacy,🛑 广告拦截"
-  #- "RULE-SET,Hijacking,🛑 广告拦截"
   
   
   # --- 域名后缀匹配 (DOMAIN-SUFFIX) ---
@@ -832,9 +773,6 @@ rules:
   - "GEOIP,CN,DIRECT"
   - "RULE-SET,ASN-CN,DIRECT"
 
-  # 无域名纯 IP：进入专用策略组，可选 REJECT-DROP 或固定污染出口
-  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR,0.0.0.0/0,no-resolve)),🐟 漏网之鱼"
-  - "AND,((NOT,((DOMAIN-REGEX,^.+$))),(IP-CIDR6,::/0,no-resolve)),🐟 漏网之鱼"
 
   # 剩余流量
   - "MATCH,🐟 漏网之鱼"

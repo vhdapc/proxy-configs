@@ -1,6 +1,6 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.11.24-2
+# Version: v2026.11.24-3
 # Date: 修改于 2026/11/24
 
 sniffer:
@@ -315,28 +315,20 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  OpenAi:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
-    path: ./ruleset/OpenAI.yaml
+  AI-CN:
+    url: "https://raw.githubusercontent.com/VPSDance/ai-proxy-rules/main/rules/clash/cn.yaml"
+    path: ./ruleset/AI-CN.yaml
     behavior: classical
     interval: 86400
     format: yaml
     type: http
-  Gemini:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
-    path: ./ruleset/Gemini.yaml
+  AI-Global:
+    url: "https://raw.githubusercontent.com/VPSDance/ai-proxy-rules/main/rules/clash/global.yaml"
+    path: ./ruleset/AI-Global.yaml
     behavior: classical
     interval: 86400
     format: yaml
     type: http
-    
-  ai:
-    url: "https://yfamilys.com/rule/ai.rule"
-    path: ./ruleset/ai.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
-    type: http  
     
   Duolingo:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Duolingo/Duolingo.yaml"
@@ -598,16 +590,14 @@ rules:
   #- AND,((DOMAIN-SUFFIX,oaistatic.com),(NETWORK,UDP)),REJECT
   #- AND,((DOMAIN-SUFFIX,oaiusercontent.com),(NETWORK,UDP)),REJECT
 
-  # --- AI系 ---
-  # Meta Muse / Meta AI 与 Facebook、Instagram、Threads、Messenger、WhatsApp
+  # --- AI系（基于 VPSDance/ai-proxy-rules，国内外 AI 严格分离） ---
+  # 1. 国内 AI 优先直连（豆包/DeepSeek/千问/Kimi/智谱/元宝等）
+  - "RULE-SET,AI-CN,DIRECT"
+  # 2. Meta AI 与 Facebook 体系走美国节点（必须排在 AI-Global 之前，因 global.yaml 含 meta.ai）
   - "DOMAIN-SUFFIX,meta.ai,🇺🇲 美国节点"
   - "RULE-SET,Facebook,🇺🇲 美国节点"
-  # Grok 网页与 xAI 登录/API；X 内置 Grok 仍跟随 Twitter 规则
-  - "DOMAIN-SUFFIX,grok.com,💬 Google & AI"
-  - "DOMAIN-SUFFIX,x.ai,💬 Google & AI"
-  - "RULE-SET,Gemini,💬 Google & AI"
-  - "RULE-SET,OpenAi,💬 Google & AI"
-  - "RULE-SET,ai,💬 Google & AI"
+  # 3. 海外 AI（OpenAI/Claude/Gemini/Antigravity/Grok/Cursor/Copilot 等）统一走 Google & AI
+  - "RULE-SET,AI-Global,💬 Google & AI"
   
   
   ##Duolingo

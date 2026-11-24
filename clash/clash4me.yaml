@@ -1,6 +1,6 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.11.24-1
+# Version: v2026.11.24-2
 # Date: 修改于 2026/11/24
 
 sniffer:
@@ -73,6 +73,8 @@ proxy-groups:
 
   - name: 📺 Emby观影
     type: select
+    include-all: true
+    filter: (?i)^Emby-
     proxies:
       - 📦 大流量 / 网盘
       - 🇺🇲 美国节点             # 美西三网优化（dmit us）

@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.11.24-3
-# Date: 修改于 2026/11/24
+# Version: v2026.11.26-1
+# Date: 修改于 2026/11/26
 
 sniffer:
   enable: true
@@ -38,7 +38,7 @@ proxy-groups:
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
 
-  # 2. 非港纯净入口（AI/Google、交易所等，兼容 ax6000 mixin.yaml）
+  # 2. 非港纯净入口（AI/Google、交易所、Reddit、TikTok 等；仅走日美原生，不回落香港，兼容 ax6000 mixin.yaml）
   - name: 🚀 节点选择
     type: fallback
     url: "https://www.gstatic.com/generate_204"
@@ -46,7 +46,6 @@ proxy-groups:
     proxies:
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
-      - 🇭🇰 香港节点
 
   # 3. Google & AI 统一出口（默认日本原生 -> 美西，不走香港以保持 IP 统一）
   - name: "💬 Google & AI"
@@ -308,6 +307,20 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+  Reddit:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.yaml"
+    path: ./ruleset/Reddit.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  TikTok:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+    path: ./ruleset/TikTok.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
   Facebook:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
     path: ./ruleset/Facebook.yaml
@@ -404,9 +417,58 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  Bahamut:
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bahamut/Bahamut.yaml"
-    path: ./ruleset/Bahamut.yaml
+  Disney:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.yaml"
+    path: ./ruleset/Disney.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Spotify:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml"
+    path: ./ruleset/Spotify.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Hulu:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Hulu/Hulu.yaml"
+    path: ./ruleset/Hulu.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  HBO:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/HBO/HBO.yaml"
+    path: ./ruleset/HBO.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  ParamountPlus:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ParamountPlus/ParamountPlus.yaml"
+    path: ./ruleset/ParamountPlus.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Abema:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Abema/Abema.yaml"
+    path: ./ruleset/Abema.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  DMM:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DMM/DMM.yaml"
+    path: ./ruleset/DMM.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  Niconico:
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Niconico/Niconico.yaml"
+    path: ./ruleset/Niconico.yaml
     behavior: classical
     interval: 86400
     format: yaml
@@ -634,7 +696,25 @@ rules:
   - "RULE-SET,Cryptocurrency,🚀 节点选择"
   
   
-  # --- 微软系 ---
+  # --- 开发与大流量下载（走大流量组节省主力香港流量，必须排在 GitHub 规则集之前） ---
+  - "DOMAIN-SUFFIX,objects.githubusercontent.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,release-assets.githubusercontent.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,github-releases.githubusercontent.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,docker.io,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,docker.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,ghcr.io,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,gcr.io,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,quay.io,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,registry.k8s.io,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,huggingface.co,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,hf.co,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,dropbox.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,dropboxusercontent.com,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,mega.nz,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,mega.co.nz,📦 大流量 / 网盘"
+  - "DOMAIN-SUFFIX,mega.io,📦 大流量 / 网盘"
+
+  # --- 微软与开发系 ---
   - "RULE-SET,GitHub,🌐 国外通用"  
   - "RULE-SET,OneDrive,📦 大流量 / 网盘"
   - "RULE-SET,Bing,🌐 国外通用"
@@ -670,6 +750,9 @@ rules:
   - "RULE-SET,SteamCN,DIRECT"
   - "RULE-SET,Twitter,🌐 国外通用"
   - "RULE-SET,Telegram,🌐 国外通用"
+  # Reddit 与 TikTok 香港节点受限（403 / 退出市场），强制走非港原生出口
+  - "RULE-SET,Reddit,🚀 节点选择"
+  - "RULE-SET,TikTok,🚀 节点选择"
   - "RULE-SET,NetEaseMusic,DIRECT"
   - "RULE-SET,Epic,🎮 游戏平台"
   - "RULE-SET,Origin,🎮 游戏平台"
@@ -678,15 +761,25 @@ rules:
   - "RULE-SET,Nintendo,🎮 游戏平台"
   - "RULE-SET,Majsoul,🎮 游戏平台"
 
+  # --- 国际与区域流媒体 ---
   - "RULE-SET,Netflix,🌐 国外通用"
-  - "RULE-SET,Bahamut,🌐 国外通用"
+  - "RULE-SET,Disney,🌐 国外通用"
+  - "RULE-SET,Spotify,🌐 国外通用"
+  # 美区限定流媒体（走 dmit-us 原生）
+  - "RULE-SET,Hulu,🇺🇲 美国节点"
+  - "RULE-SET,HBO,🇺🇲 美国节点"
+  - "RULE-SET,ParamountPlus,🇺🇲 美国节点"
+  # 日区限定流媒体（走 zouter-jp 纯日本原生）
+  - "RULE-SET,Abema,🇯🇵 日本节点"
+  - "RULE-SET,DMM,🇯🇵 日本节点"
+  - "RULE-SET,Niconico,🇯🇵 日本节点"
   - "RULE-SET,Bilibili,DIRECT"
   
   # === Emby 观影规则 ===
   # 墨白 Emby (mobaiemby.site 包含 m 和 myg2 两个子域名)
   - DOMAIN-SUFFIX,mobaiemby.site,📺 Emby观影
   # UHDNow Emby
-  #- DOMAIN-KEYWORD,uhdnow,📺 Emby观影
+  - DOMAIN-KEYWORD,uhdnow,📺 Emby观影
  
   # --- 如果后续有其他 Emby，直接按格式加在下面 ---
   # - DOMAIN-SUFFIX,新域名.com,📺 Emby观影

@@ -1,6 +1,6 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.11.26-3
+# Version: v2026.11.26-4
 # Date: 修改于 2026/11/26
 
 sniffer:
@@ -591,8 +591,8 @@ rules:
   # 微信优先直连，避免被 STUN/UDP 规则误伤
   - "RULE-SET,WeChat,DIRECT"
   
-  # 仅屏蔽海外 QUIC，保留国内 QUIC（利用 GEOSITE,cn 与 GEOIP,CN,no-resolve 避免多余 DNS 解析）
-  - "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443))),(NOT,((GEOSITE,cn))),(NOT,((GEOIP,CN,no-resolve)))),REJECT"
+  # 封禁所有 QUIC 流量（UDP 443/8443），强制回退至 TCP/HTTP2，避免 TProxy UDP 空闲超时导致连接重置
+  - "AND,((NETWORK,UDP),(OR,((DST-PORT,443),(DST-PORT,8443)))),REJECT"
   
   #webrtc，防止泄露
   - DOMAIN-KEYWORD,stun,REJECT

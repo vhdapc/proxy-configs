@@ -89,7 +89,7 @@ proxy-groups:
       - 🇯🇵 日本节点
       - DIRECT
 
-  - name: 🍏 其余 Apple
+  - name: 🍏 Apple CN
     type: select
     proxies:
       - DIRECT
@@ -678,16 +678,23 @@ rules:
   - "RULE-SET,Google,💬 Google & AI"
 
   # --- Apple系 ---
-  # 需要海外出口的 Apple 服务：APNs / TV / Music / Mail
+  # 1. Apple CN（云上贵州 / 国内 CDN）与 Apple ID 登录认证：默认直连，可一键切至 🍎 Apple Proxy 实现全部 Apple 代理
+  - "DOMAIN-SUFFIX,icloud.com.cn,🍏 Apple CN"
+  - "DOMAIN-SUFFIX,apple.com.cn,🍏 Apple CN"
+  - "DOMAIN,gsa.apple.com,🍏 Apple CN"
+  - "DOMAIN,idmsa.apple.com,🍏 Apple CN"
+  - "DOMAIN,appleid.apple.com,🍏 Apple CN"
+  - "DOMAIN,gsas.apple.com,🍏 Apple CN"
+  - "GEOSITE,apple-cn,🍏 Apple CN"
+
+  # 2. 其余海外 Apple 服务默认走代理
   - "RULE-SET,APNs,🍎 Apple Proxy"
   - "RULE-SET,AppleTV,🍎 Apple Proxy"
   - "RULE-SET,AppleMusic,🍎 Apple Proxy"
   - "RULE-SET,AppleMail,🍎 Apple Proxy"
-
-  # 其余 Apple 基础服务默认直连
-  - "RULE-SET,iCloud,🍏 其余 Apple"
-  - "RULE-SET,Apple,🍏 其余 Apple"
-  - "GEOSITE,apple,🍏 其余 Apple"
+  - "RULE-SET,iCloud,🍎 Apple Proxy"
+  - "RULE-SET,Apple,🍎 Apple Proxy"
+  - "GEOSITE,apple,🍎 Apple Proxy"
   
   # --- 支付系 ---
   - "RULE-SET,PayPal,🇺🇲 美国节点"

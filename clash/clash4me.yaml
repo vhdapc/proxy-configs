@@ -1,7 +1,7 @@
 # Clash / mihomo 配置模板（Sub-Store 调用版）
 # Template: clash4me
-# Version: v2026.11.26-4
-# Date: 修改于 2026/11/26
+# Version: v2026.11.27-1
+# Date: 修改于 2026/11/27
 
 sniffer:
   enable: true
@@ -84,7 +84,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌐 国外通用
-      - 🇭🇰 香港节点
+      - 🇭🇰 香港大流量
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
       - DIRECT
@@ -99,7 +99,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌐 国外通用
-      - 🇭🇰 香港节点
+      - 🇭🇰 香港大流量
       - 🇯🇵 日本节点
       - 🇺🇲 美国节点
       - DIRECT
@@ -107,22 +107,19 @@ proxy-groups:
   - name: 🐟 漏网之鱼
     type: select
     proxies:
+      - 🚀 手动切换
       - 📦 大流量 / 网盘
       - 🇭🇰 香港节点
       - 🇺🇲 美国节点
       - 🇯🇵 日本节点
-      - 🚀 手动切换
 
   # === 自建区域组 ===
-  # 香港主力：仅匹配 po0-po0 hk，排除 Zouter（留给大流量组）与含 JP 的日本转发节点
+  # 香港主力：手动选择（推荐选 Po0-HK-Clean 商宽专线），排除 Zouter（留给大流量组）与含 JP 的日本转发节点
   - name: 🇭🇰 香港节点
     include-all: true
     filter: (?i)港|HK|Hong\s?Kong
     exclude-filter: (?i)BGP|NF|应急|Zouter|JP|日本|东京|大阪
-    type: url-test
-    url: "https://www.gstatic.com/generate_204"
-    interval: 300
-    tolerance: 50
+    type: select
 
   # 香港大流量（隐藏组）：精准收编 HK-zouter-v4 / HK-zouter-v6
   - name: 🇭🇰 香港大流量
